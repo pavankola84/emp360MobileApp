@@ -37,6 +37,7 @@ import {
   EMP_SUMMARY_FORM_ID,
   EMP_PERSONAL_PROFILE_FORM_ID,
 } from '../../util/constants';
+import {Toast} from 'toastify-react-native';
 
 const formatDate = inputDate => {
   const date = new Date(inputDate);
@@ -174,9 +175,11 @@ const PersonalDetails = ({navigation}) => {
 
         if (response.success) {
           setIsLoading(false);
+          Toast.success('Profile Details updated successfully', 'top');
           console.log('Post Successful!', response);
         } else {
           setIsLoading(false);
+          Toast.error('Profile Details update failed', 'top');
           console.log('Post Unsuccessful!', response);
         }
       } catch (error) {
@@ -246,9 +249,11 @@ const PersonalDetails = ({navigation}) => {
       );
       if (response.success) {
         setIsLoading(false);
+        Toast.success('Profile picture uploaded successfully', 'top');
         console.log('Profile picture uploaded successfully:', response);
       } else {
         setIsLoading(false);
+        Toast.error('Profile picture upload failed', 'top');
         console.error('Failed to upload profile picture:', response);
       }
     } catch (error) {
@@ -348,7 +353,7 @@ const PersonalDetails = ({navigation}) => {
     <View
       style={[{flex: 1, height: theme.buttonHeight, backgroundColor: '#fff'}]}>
       <ScreenHeader navigation={navigation} text={ProfileSettingsHead} />
-      <ScrollView style={{marginTop: 16}}>
+      <ScrollView style={{marginTop: 16, paddingHorizontal: 16}}>
         <TouchableOpacity
           onPress={handleProfilePicClick}
           style={styles.profilePicContainer}>
@@ -521,6 +526,7 @@ const styles = StyleSheet.create({
   column: {
     flex: 1,
     paddingHorizontal: 8,
+    paddingVertical: 2,
   },
   inputContainer: {
     width: '60%',

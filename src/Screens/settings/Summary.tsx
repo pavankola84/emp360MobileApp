@@ -7,6 +7,7 @@ import {ProfileSettingsHead, SummaryHead} from '../../util/strings';
 import PrimaryButton from '../../Components/PrimaryButton';
 import {useFocusEffect} from '@react-navigation/native';
 import {EMP_SUMMARY_FORM_ID} from '../../util/constants';
+import ToastManager, {Toast} from 'toastify-react-native';
 
 import Loader from '../../Components/Loader';
 import {
@@ -56,6 +57,7 @@ const Summary = ({navigation}) => {
 
         if (response.success) {
           setIsLoading(false);
+          Toast.success('Summary updated successfully', 'top');
           console.log('Post Successful!', response);
         } else {
           setIsLoading(false);
@@ -63,6 +65,7 @@ const Summary = ({navigation}) => {
         }
       } catch (error) {
         setIsLoading(false);
+        Toast.error('Summary update failed', 'top');
         console.error('Error posting Summary:', error.message);
       }
     } else {

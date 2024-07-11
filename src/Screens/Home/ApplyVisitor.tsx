@@ -380,7 +380,9 @@ const ApplyVisitor: FC<ApplyVisitorProps> = ({navigation, route}) => {
             <Text style={styles.error}>{errors.photoUri}</Text>
           )}
           {photoUri ? (
-            <Image source={{uri: photoUri}} style={styles.photoPreview} />
+            <View style={styles.photoPreviewContainer}>
+              <Image source={{uri: photoUri}} style={styles.photoPreview} />
+            </View>
           ) : null}
           <View
             style={{
@@ -570,11 +572,20 @@ const styles = StyleSheet.create({
   photoButton: {
     backgroundColor: '#162952',
   },
-  photoPreview: {
-    width: 100,
-    height: 100,
+  photoPreviewContainer: {
+    width: 130,
+    height: 130,
     borderRadius: 8,
     marginTop: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#ddd',
+    alignSelf: 'center',
+  },
+  photoPreview: {
+    width: 120,
+    height: 120,
+    borderRadius: 4,
     backgroundColor: '#ddd',
   },
   modalItem: {

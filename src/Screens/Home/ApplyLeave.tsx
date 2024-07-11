@@ -289,7 +289,7 @@ const ApplyLeave: FC<ApplyLeaveProps> = ({navigation, route}) => {
           ? 'firstHalf'
           : 'secondHalf',
     };
-
+    // console.log(payload);
     const response: ApiResponse<any> = await applyLeaveEMP(
       payload,
       keycloak?.token,

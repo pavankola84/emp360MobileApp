@@ -23,6 +23,7 @@ import {
   postSummaryHobbiesData,
 } from '../../util/api/employee';
 import {EMP_HOBBIES_FORM_ID} from '../../util/constants';
+import {Toast} from 'toastify-react-native';
 
 const InterestsAndHobbies = ({navigation}) => {
   const theme = useTheme();
@@ -79,9 +80,11 @@ const InterestsAndHobbies = ({navigation}) => {
 
         if (response.success) {
           setIsLoading(false);
+          Toast.success('Interests & Hobbies updated successfully', 'top');
           console.log('Post Successful!', response);
         } else {
           setIsLoading(false);
+          Toast.error('Interests & Hobbies update failed', 'top');
           console.log('Post Unsuccessful!', response);
         }
       } catch (error) {
