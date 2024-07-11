@@ -332,7 +332,7 @@ const Home: React.FC<Props> = ({navigation}) => {
         </ScrollView>
       </View>
       <Prompt
-        title={'Are you sure wanted to cancel your Leave?'}
+        title={'Are you sure you want to cancel your Leave Request?'}
         onPressNegative={() => {
           setShowDialog(false);
           setStatus('');
@@ -344,7 +344,8 @@ const Home: React.FC<Props> = ({navigation}) => {
           setShowDialog(false);
           handleCancelLeave();
         }}
-        positiveTitle={status == 'approve' ? 'Approve' : 'Reject'}
+        negativetitle="No"
+        positiveTitle={status == 'approve' ? 'Approve' : 'Yes'}
         visible={showDialog}
         setVisible={visible => {
           setShowDialog(visible);

@@ -54,7 +54,7 @@ const TeamLeaves: React.FC<TeamLeavesProps> = ({navigation}) => {
     try {
       const response: ApiResponse<any> = await fetchTeamLeavesData(
         profile.email,
-        keycloak?.token
+        keycloak?.token,
       );
       if (response.success) {
         const data = response.data;
@@ -74,7 +74,7 @@ const TeamLeaves: React.FC<TeamLeavesProps> = ({navigation}) => {
     try {
       const response: ApiResponse<any> = await fetchTeamComboffData(
         profile.email,
-        keycloak?.token
+        keycloak?.token,
       );
       if (response.success) {
         const data = response.data;
@@ -96,7 +96,7 @@ const TeamLeaves: React.FC<TeamLeavesProps> = ({navigation}) => {
     const response: any = await submitDecisionReject(
       status,
       id?.id,
-      keycloak?.token
+      keycloak?.token,
     );
     if (response?.success) {
       let message =
@@ -121,7 +121,7 @@ const TeamLeaves: React.FC<TeamLeavesProps> = ({navigation}) => {
     const response: any = await submitCombOffDecisionReject(
       status,
       id?.id,
-      keycloak?.token
+      keycloak?.token,
     );
     if (response?.success) {
       let message =
@@ -158,7 +158,7 @@ const TeamLeaves: React.FC<TeamLeavesProps> = ({navigation}) => {
         }
         return acc;
       },
-      {WFH: [], general: []}
+      {WFH: [], general: []},
     );
 
     setWFH(WFH);

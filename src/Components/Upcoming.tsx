@@ -43,7 +43,7 @@ const Upcoming: FC<UpcomingProps> = ({
               onPressApprove={() => {
                 onPressApprove(item);
               }}
-              negativeButtonName={'Reject'}
+              negativeButtonName={'Cancel'}
               positiveButtonName={'Approve'}
             />
           );
