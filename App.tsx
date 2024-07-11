@@ -1,118 +1,137 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
-import React from 'react';
-import type {PropsWithChildren} from 'react';
+import {ReactNativeKeycloakProvider} from '@react-keycloak/native';
+import {NavigationContainer} from '@react-navigation/native';
+import React, {useEffect, useState, useMemo} from 'react';
 import {
+  Dimensions,
   SafeAreaView,
-  ScrollView,
   StatusBar,
-  StyleSheet,
-  Text,
   useColorScheme,
-  View,
 } from 'react-native';
-
+import RNBootSplash from 'react-native-bootsplash';
+import {Provider as PaperProvider} from 'react-native-paper';
+import {AppSettingsContext} from './src/context/appSettings';
+import useAsyncStorage from './src/Hooks/useAsyncStorage';
+import MainStack from './src/Navigation/MainStack';
+import keycloak from './src/util/constants';
+import {theme, theme2, theme3} from './src/util/theme';
+import {QueryClient, QueryClientProvider} from 'react-query';
 import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+  getRefreshToken,
+  removeRefreshToken,
+  storeRefreshToken,
+} from './src/util/api/auth';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
+import ToastManager from 'toastify-react-native';
+import {dip} from './src/util/function';
+import Toast from 'react-native-toast-message';
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): React.JSX.Element {
+const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
 
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+  useEffect(() => {
+    const init = async () => {};
+
+    init().finally(async () => {
+      await RNBootSplash.hide();
+    });
+  }, []);
 
   const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+    backgroundColor: isDarkMode
+      ? theme.colors.background
+      : theme.colors.background,
+    flex: 1,
   };
 
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-}
+  const [contextTheme, setContextTheme] = useState('');
 
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
+  const AppContextObject = {
+    theme: contextTheme,
+    setTheme: setContextTheme,
+  };
+
+  const [storageItem] = useAsyncStorage('theme', contextTheme);
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  var mainTheme = useMemo(() => {
+    switch (storageItem) {
+      case 'Green':
+        return theme;
+      case 'Blue':
+        return theme2;
+      case 'Red':
+        return theme3;
+      default:
+        return theme2;
+    }
+  }, [storageItem]);
+
+  const wd = Dimensions.get('window').width;
+
+  return (
+    <>
+      <AppSettingsContext.Provider value={AppContextObject}>
+        <Toast ref={ref => Toast.setRef(ref)} />
+        <PaperProvider theme={mainTheme}>
+          <SafeAreaView style={backgroundStyle}>
+            <ReactNativeKeycloakProvider
+              autoRefreshToken={true}
+              authClient={keycloak}
+              onEvent={async (event, error) => {
+                await keycloak.updateToken(5);
+                if (event === 'onReady') {
+                  try {
+                    const refreshToken = await getRefreshToken();
+                    if (refreshToken) {
+                      keycloak.refreshToken = refreshToken;
+                      const refreshed = await keycloak.updateToken();
+                      if (refreshed) {
+                        storeRefreshToken(keycloak?.refreshToken || '');
+                        setLoggedIn(true);
+                      }
+                    }
+                  } catch (err) {
+                  } finally {
+                  }
+                } else if (event === 'onAuthSuccess') {
+                  storeRefreshToken(keycloak?.refreshToken || '');
+                  setLoggedIn(true);
+                } else if (event === 'onAuthError') {
+                  setLoggedIn(false);
+                } else if (event === 'onTokenExpired') {
+                  const refreshed = await keycloak.updateToken();
+                  if (refreshed) {
+                    storeRefreshToken(keycloak?.refreshToken || '');
+                  }
+                } else if (event === 'onAuthLogout') {
+                  setLoggedIn(false);
+                  removeRefreshToken();
+                }
+              }}
+              onTokens={tokens => {}}
+              initOptions={{
+                redirectUri: 'techsophy://Homepage',
+                postLogoutRedirectUri: 'techsophy://Homepage',
+                inAppBrowserOptions: {},
+              }}>
+              <QueryClientProvider client={new QueryClient()}>
+                <SafeAreaProvider>
+                  <ToastManager
+                    width={wd * 0.9}
+                    height={dip(100)}
+                    textStyle={{margin: 10}}
+                  />
+                  <NavigationContainer onReady={() => RNBootSplash.hide()}>
+                    <MainStack />
+                  </NavigationContainer>
+                </SafeAreaProvider>
+              </QueryClientProvider>
+            </ReactNativeKeycloakProvider>
+          </SafeAreaView>
+        </PaperProvider>
+      </AppSettingsContext.Provider>
+    </>
+  );
+};
 
 export default App;
