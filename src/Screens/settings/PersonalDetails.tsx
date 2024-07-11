@@ -13,6 +13,7 @@ import {
   Alert,
   Button,
   ScrollView,
+  Platform,
 } from 'react-native';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import ProfilePic from '../../../assets/img/Vignesh.jpeg';
@@ -22,6 +23,7 @@ import {EditIcon} from '../../util/icons';
 import LinkedinLogo from '../../../assets/img/linkedin.png';
 import PrimaryButton from '../../Components/PrimaryButton';
 import {useFocusEffect} from '@react-navigation/native';
+import RNFetchBlob from 'rn-fetch-blob';
 import {
   ApiResponse,
   fetchDataUsingFormId,
@@ -168,28 +170,40 @@ const PersonalDetails = ({navigation}) => {
     }
   };
 
-  useFocusEffect(
-    useCallback(() => {
-      setIsLoading(true);
-      getLinkedin();
-      getProfileDetails();
-      getPersonalProfileDetails();
-      getProfilePicture();
-      return () => {};
-    }, []),
-  );
+  const uploadProfilePic = async (uri, fileName) => {
+    try {
+      const response = await RNFetchBlob.fetch(
+        'POST',
+        'https://api-dev.techsophy.com/api/accounts/v1/users/preferences/profile-picture',
+        {
+          Authorization: `Bearer ${keycloak?.token}`,
+          'Content-Type': 'multipart/form-data',
+        },
+        [
+          {
+            name: 'file',
+            filename: fileName,
+            type: 'image/jpeg',
+            data: RNFetchBlob.wrap(uri),
+          },
+        ],
+      );
 
-  // useEffect(() => {
-  //   console.log('hello', profilePic);
-  // }, [profilePic]);
-
-  const uploadProfilePic = async (uri: any) => {
-    console.log('fileUri', uri);
+      const data = response.json();
+      if (response.info().status === 200) {
+        console.log('Profile picture uploaded successfully:', data);
+      } else {
+        console.error('Failed to upload profile picture:', data.message);
+      }
+    } catch (error) {
+      console.error('Error uploading profile picture:', error.message);
+    }
   };
 
   const handleProfilePicClick = () => {
     const options = {
       quality: 1,
+      mediaType: 'photo',
     };
 
     Alert.alert(
@@ -199,19 +213,23 @@ const PersonalDetails = ({navigation}) => {
         {
           text: 'Choose from Gallery',
           onPress: () => {
-            launchImageLibrary(options, response => {
+            launchImageLibrary(options, async response => {
               if (response.didCancel) {
                 console.log('User cancelled image picker');
-              } else if (response.error) {
-                console.log('ImagePicker Error: ', response.error);
+              } else if (response.errorCode) {
+                console.log('ImagePicker Error: ', response.errorMessage);
               } else {
-                const source = {uri: response.assets?.[0]?.uri};
-                if (source) {
+                const uri = response.assets[0].uri;
+                if (uri) {
                   try {
-                    setProfilePic(source);
-                    uploadProfilePic(source);
+                    const formattedUri =
+                      Platform.OS === 'android'
+                        ? uri
+                        : uri.replace('file://', '');
+                    setProfilePic(uri); // You can display the image URI directly
+                    await uploadProfilePic(formattedUri, 'profile.jpg');
                   } catch (error) {
-                    console.error('Error converting image to Base64:', error);
+                    console.error('Error converting image to Blob:', error);
                   }
                 }
               }
@@ -221,19 +239,23 @@ const PersonalDetails = ({navigation}) => {
         {
           text: 'Capture Photo',
           onPress: () => {
-            launchCamera({cameraType: 'back'}, response => {
+            launchCamera(options, async response => {
               if (response.didCancel) {
                 console.log('User cancelled image picker');
-              } else if (response.error) {
-                console.log('ImagePicker Error: ', response.error);
+              } else if (response.errorCode) {
+                console.log('ImagePicker Error: ', response.errorMessage);
               } else {
-                const source = {uri: response.assets?.[0]?.uri};
-                if (source) {
+                const uri = response.assets[0].uri;
+                if (uri) {
                   try {
-                    setProfilePic(source);
-                    uploadProfilePic(source);
+                    const formattedUri =
+                      Platform.OS === 'android'
+                        ? uri
+                        : uri.replace('file://', '');
+                    setProfilePic(uri);
+                    await uploadProfilePic(formattedUri, 'profile.jpg');
                   } catch (error) {
-                    console.error('Error converting image to Base64:', error);
+                    console.error('Error converting image to Blob:', error);
                   }
                 }
               }
@@ -306,9 +328,22 @@ const PersonalDetails = ({navigation}) => {
 
   const handleSave = () => {
     postLinkedin();
-
-    // console.log(details);
   };
+
+  useEffect(() => {
+    getProfilePicture();
+  }, [profilePic]);
+
+  useFocusEffect(
+    useCallback(() => {
+      setIsLoading(true);
+      getLinkedin();
+      getProfileDetails();
+      getPersonalProfileDetails();
+      getProfilePicture();
+      return () => {};
+    }, []),
+  );
 
   return (
     <View
