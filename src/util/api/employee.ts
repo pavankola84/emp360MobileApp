@@ -91,6 +91,29 @@ export const fetchProfilePicture = async (
   }
 };
 
+export const postProfilePicture = async (
+  token: string,
+  formData: FormData,
+): Promise<ApiResponse<any>> => {
+  try {
+    const url = `${REACT_APP_API_GATEWAY_URL}${ACCOUNT_USERS}/preferences/profile-picture`;
+    const response: AxiosResponse<any> = await axios.post(url, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (response.data.success) {
+      return {success: true, data: response.data.data};
+    } else {
+      return {success: false, message: 'Failed to Post data'};
+    }
+  } catch (error: any) {
+    return {success: false, message: error.message || 'Unknown error occurred'};
+  }
+};
+
 export const fetchUsers = async (token: string): Promise<ApiResponse<any>> => {
   try {
     const url = `${REACT_APP_API_GATEWAY_URL}${ACCOUNT_USERS}`;

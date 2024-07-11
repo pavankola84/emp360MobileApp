@@ -2,6 +2,7 @@ import React, {useCallback, useEffect, useState} from 'react';
 import useTheme from '../../Hooks/useTheme';
 import useOnlyKeycloak from '../../Hooks/useOnlyKeycloak';
 import ScreenHeader from '../../Components/ScreenHeader';
+import axios from 'axios';
 import {ProfileSettingsHead, SaveButton} from '../../util/strings';
 import {
   StyleSheet,
@@ -28,6 +29,7 @@ import {
   ApiResponse,
   fetchDataUsingFormId,
   fetchProfilePicture,
+  postProfilePicture,
   postSummaryHobbiesData,
 } from '../../util/api/employee';
 import {
@@ -151,6 +153,64 @@ const PersonalDetails = ({navigation}) => {
     }
   };
 
+  const postLinkedin = async () => {
+    setIsLoading(true);
+
+    if (summaryId) {
+      let payload = {
+        formId: EMP_SUMMARY_FORM_ID,
+        id: summaryId,
+        formData: {
+          summary: summary,
+          officialEmail: profile.email,
+          linkedinUrl: linkedin,
+        },
+      };
+      try {
+        const response: ApiResponse<any> = await postSummaryHobbiesData(
+          payload,
+          keycloak?.token,
+        );
+
+        if (response.success) {
+          setIsLoading(false);
+          console.log('Post Successful!', response);
+        } else {
+          setIsLoading(false);
+          console.log('Post Unsuccessful!', response);
+        }
+      } catch (error) {
+        setIsLoading(false);
+        console.error('Error posting Summary:', error.message);
+      }
+    } else {
+      let payload = {
+        formId: EMP_SUMMARY_FORM_ID,
+        formData: {
+          summary: summary,
+          officialEmail: profile.email,
+          linkedinUrl: linkedin,
+        },
+      };
+      try {
+        const response: ApiResponse<any> = await postSummaryHobbiesData(
+          payload,
+          keycloak?.token,
+        );
+        if (response.success) {
+          setIsLoading(false);
+          console.log('Post Successful!', response);
+        } else {
+          setIsLoading(false);
+          console.log('Post Unsuccessful!', response);
+        }
+      } catch (error) {
+        setIsLoading(false);
+        console.error('Error Posting Summary:', error.message);
+      }
+    }
+  };
+
   const getProfilePicture = async () => {
     try {
       const response: ApiResponse<any> = await fetchProfilePicture(
@@ -171,31 +231,28 @@ const PersonalDetails = ({navigation}) => {
   };
 
   const uploadProfilePic = async (uri, fileName) => {
-    try {
-      const response = await RNFetchBlob.fetch(
-        'POST',
-        'https://api-dev.techsophy.com/api/accounts/v1/users/preferences/profile-picture',
-        {
-          Authorization: `Bearer ${keycloak?.token}`,
-          'Content-Type': 'multipart/form-data',
-        },
-        [
-          {
-            name: 'file',
-            filename: fileName,
-            type: 'image/jpeg',
-            data: RNFetchBlob.wrap(uri),
-          },
-        ],
-      );
+    setIsLoading(true);
+    const formData = new FormData();
+    formData.append('file', {
+      name: fileName,
+      type: 'image/jpeg',
+      uri: Platform.OS === 'android' ? uri : uri.replace('file://', ''),
+    });
 
-      const data = response.json();
-      if (response.info().status === 200) {
-        console.log('Profile picture uploaded successfully:', data);
+    try {
+      const response: ApiResponse<any> = await postProfilePicture(
+        keycloak?.token,
+        formData,
+      );
+      if (response.success) {
+        setIsLoading(false);
+        console.log('Profile picture uploaded successfully:', response);
       } else {
-        console.error('Failed to upload profile picture:', data.message);
+        setIsLoading(false);
+        console.error('Failed to upload profile picture:', response);
       }
     } catch (error) {
+      setIsLoading(false);
       console.error('Error uploading profile picture:', error.message);
     }
   };
@@ -266,64 +323,6 @@ const PersonalDetails = ({navigation}) => {
       ],
       {cancelable: true},
     );
-  };
-
-  const postLinkedin = async () => {
-    setIsLoading(true);
-
-    if (summaryId) {
-      let payload = {
-        formId: EMP_SUMMARY_FORM_ID,
-        id: summaryId,
-        formData: {
-          summary: summary,
-          officialEmail: profile.email,
-          linkedinUrl: linkedin,
-        },
-      };
-      try {
-        const response: ApiResponse<any> = await postSummaryHobbiesData(
-          payload,
-          keycloak?.token,
-        );
-
-        if (response.success) {
-          setIsLoading(false);
-          console.log('Post Successful!', response);
-        } else {
-          setIsLoading(false);
-          console.log('Post Unsuccessful!', response);
-        }
-      } catch (error) {
-        setIsLoading(false);
-        console.error('Error posting Summary:', error.message);
-      }
-    } else {
-      let payload = {
-        formId: EMP_SUMMARY_FORM_ID,
-        formData: {
-          summary: summary,
-          officialEmail: profile.email,
-          linkedinUrl: linkedin,
-        },
-      };
-      try {
-        const response: ApiResponse<any> = await postSummaryHobbiesData(
-          payload,
-          keycloak?.token,
-        );
-        if (response.success) {
-          setIsLoading(false);
-          console.log('Post Successful!', response);
-        } else {
-          setIsLoading(false);
-          console.log('Post Unsuccessful!', response);
-        }
-      } catch (error) {
-        setIsLoading(false);
-        console.error('Error Posting Summary:', error.message);
-      }
-    }
   };
 
   const handleSave = () => {
