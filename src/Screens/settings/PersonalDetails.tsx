@@ -38,6 +38,7 @@ import {
   EMP_PERSONAL_PROFILE_FORM_ID,
 } from '../../util/constants';
 import {Toast} from 'toastify-react-native';
+import Loader from '../../Components/Loader';
 
 const formatDate = inputDate => {
   const date = new Date(inputDate);
@@ -353,6 +354,8 @@ const PersonalDetails = ({navigation}) => {
     <View
       style={[{flex: 1, height: theme.buttonHeight, backgroundColor: '#fff'}]}>
       <ScreenHeader navigation={navigation} text={ProfileSettingsHead} />
+      <Loader isLoading={isLoading} />
+
       <ScrollView style={{marginTop: 16, paddingHorizontal: 16}}>
         <TouchableOpacity
           onPress={handleProfilePicClick}
@@ -485,7 +488,7 @@ const styles = StyleSheet.create({
     right: '36%',
     borderRadius: 50,
     borderWidth: 1,
-    borderColor: '#162952',
+    borderColor: '#bfbfbf',
   },
   editIcon: {
     width: 18,

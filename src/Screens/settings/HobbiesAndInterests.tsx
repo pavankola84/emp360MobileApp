@@ -153,7 +153,7 @@ const InterestsAndHobbies = ({navigation}) => {
         <PrimaryButton
           onPress={isEditable ? handleSave : handleEdit}
           text={isEditable ? 'Save' : 'Edit'}
-          style={styles.saveButton}
+          style={isEditable ? styles.saveButton : styles.editButton}
         />
       </View>
     </View>
@@ -191,6 +191,12 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   saveButton: {
+    width: '50%',
+    alignSelf: 'center',
+    marginTop: 16,
+    backgroundColor: '#f15830',
+  },
+  editButton: {
     width: '50%',
     alignSelf: 'center',
     marginTop: 16,
