@@ -39,6 +39,8 @@ export const TabLabel = {
 };
 export const ProfileSettingsHead = 'Profile Settings';
 export const SummaryHead = 'Summary';
+export const WFHHead = 'Work From Home Request';
+export const CompOffHead = 'Comp Off Request';
 export const SaveButton = 'Save';
 export const LogoutConfirm = 'Are you sure you want to logout?';
 export const List1Heading = 'Some Featured Items';

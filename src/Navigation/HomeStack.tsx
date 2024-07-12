@@ -5,6 +5,8 @@ import Home from '../Screens/Home/Home';
 import ApplyLeave from '../Screens/Home/ApplyLeave';
 import AppliedLeaves from '../Screens/Home/AppliedLeaves';
 import Profile from '../Screens/Home/Profile';
+import WFHRequest from '../Screens/Home/WFHRequest';
+import CompOffRequest from '../Screens/Home/CompOffRequest';
 
 const HomeNav = createNativeStackNavigator();
 
@@ -14,6 +16,8 @@ const HomeStack = () => {
       screenOptions={{headerShown: false}}
       initialRouteName={'HomeScreen'}>
       <HomeNav.Screen name="HomeScreen" component={Home} />
+      <HomeNav.Screen name="WFHRequest" component={WFHRequest} />
+      <HomeNav.Screen name="CompOffRequest" component={CompOffRequest} />
       {/* <HomeNav.Screen name="ApplyLeave" component={ApplyLeave} />
       <HomeNav.Screen name="AppliedLeaves" component={AppliedLeaves} /> */}
       {/* <HomeNav.Screen name="Profile" component={Profile} /> */}

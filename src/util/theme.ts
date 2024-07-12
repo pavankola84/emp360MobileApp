@@ -9,6 +9,7 @@ const colors = {
   primary: '#134984',
   lightPrimary: '#CFF2E5',
   darkPrimary: '#206F52',
+  secondary: '#162952',
   text: '#333333',
   lightText: '#FFFFFF',
   placeholder: '#677294',

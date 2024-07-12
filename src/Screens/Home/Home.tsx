@@ -31,6 +31,17 @@ import ToastManager, {Toast} from 'toastify-react-native';
 import {ActivityIndicator} from 'react-native-paper';
 import Loader from '../../Components/Loader';
 import Prompt from '../../Components/Prompt';
+import {
+  ApplyLeaveIcon,
+  Content,
+  HomeIcon,
+  TermsIcon,
+  VisitorIcon,
+  WFHIcon,
+  CompOffIcon,
+} from '../../util/icons';
+import ButtonIcon from '../../Components/ButtonIconWithTitle';
+import ButtonIconWithTitle from '../../Components/ButtonIconWithTitle';
 
 interface Props {
   navigation: any;
@@ -119,6 +130,8 @@ const Home: React.FC<Props> = ({navigation}) => {
       setIsLoading(true);
       getLeaveCounts();
       getMyLeaves();
+      console.log('Details leave', leaveDetails);
+
       return () => {};
     }, []),
   );
@@ -239,7 +252,7 @@ const Home: React.FC<Props> = ({navigation}) => {
                 name={'Previlage Leaves'}
               />
             </View>
-            <View
+            {/* <View
               style={{
                 height: dip(100),
                 justifyContent: 'center',
@@ -257,6 +270,50 @@ const Home: React.FC<Props> = ({navigation}) => {
                   text={'Apply Leave'}
                 />
               </View>
+            </View> */}
+            <View
+              style={{
+                height: dip(100),
+                flexDirection: 'row',
+                width: '100%',
+                backgroundColor: '#eeeeee',
+                justifyContent: 'space-around',
+                alignItems: 'center',
+                marginBottom: 10,
+                borderRadius: dip(10),
+              }}>
+              <ButtonIconWithTitle
+                color={'#000000'}
+                onPress={() =>
+                  navigation.navigate('ApplyLeave', {
+                    leaveType: 1,
+                  })
+                }
+                icon={<Content height={dip(27)} width={dip(27)} color="#fff" />}
+                text={'Apply Leave'}
+              />
+              <ButtonIconWithTitle
+                color={'#000000'}
+                onPress={() => navigation.navigate('WFHRequest')}
+                icon={<WFHIcon height={dip(32)} width={dip(32)} color="#fff" />}
+                text={'WFH Request'}
+              />
+              <ButtonIconWithTitle
+                color={'#000000'}
+                onPress={() => navigation.navigate('CompOffRequest')}
+                icon={
+                  <CompOffIcon height={dip(32)} width={dip(32)} color="#fff" />
+                }
+                text={'Comp Off Request'}
+              />
+              <ButtonIconWithTitle
+                color={'#000000'}
+                onPress={() => navigation.navigate('Visitors')}
+                icon={
+                  <VisitorIcon height={dip(32)} width={dip(32)} color="#fff" />
+                }
+                text={'Visitor Pass'}
+              />
             </View>
             <View
               style={{

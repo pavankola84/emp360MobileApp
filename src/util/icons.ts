@@ -35,7 +35,8 @@ import Play from '../../assets/svg/Play.svg';
 import File from '../../assets/svg/File.svg';
 import EditIcon from '../../assets/svg/EditIcon.svg';
 import VisitorIcon from '../../assets/svg/Visitor.svg';
-import VisitorIcon2 from '../../assets/svg/Visitor2.svg';
+import WFHIcon from '../../assets/svg/WFHIcon.svg';
+import CompOffIcon from '../../assets/svg/CompOffIcon.svg';
 
 export {
   Apple,
@@ -75,5 +76,6 @@ export {
   File,
   EditIcon,
   VisitorIcon,
-  VisitorIcon2,
+  WFHIcon,
+  CompOffIcon,
 };

@@ -35,7 +35,7 @@ const ScreenHeader = (props: {
           />
         </TouchableOpacity>
       )}
-      <Text style={{fontSize: dip(25), fontWeight: '700'}}>{text}</Text>
+      <Text style={{fontSize: dip(20), fontWeight: '700'}}>{text}</Text>
     </View>
   );
 };
