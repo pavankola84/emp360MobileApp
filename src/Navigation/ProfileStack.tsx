@@ -15,6 +15,8 @@ import PersonalDetails from '../Screens/settings/PersonalDetails';
 import Assets from '../Screens/settings/Assets';
 import HobbiesAndInterests from '../Screens/settings/HobbiesAndInterests';
 import Summary from '../Screens/settings/Summary';
+import HolidaysList from '../Screens/QuckAccess/HolidaysList';
+import VisitorsList from '../Screens/QuckAccess/VisitorsList';
 
 const AuthStackNav = createNativeStackNavigator();
 
@@ -27,6 +29,8 @@ const ProfileStack = () => {
       {/* <AuthStackNav.Screen name="Terms" component={Terms} /> */}
       {/* <AuthStackNav.Screen name="About" component={About} /> */}
       <AuthStackNav.Screen name="PersonalDetails" component={PersonalDetails} />
+      <AuthStackNav.Screen name="HolidaysList" component={HolidaysList} />
+      <AuthStackNav.Screen name="VisitorsList" component={VisitorsList} />
       {/* <AuthStackNav.Screen name="Assets" component={Assets} /> */}
       <AuthStackNav.Screen
         name="HobbiesAndInterests"

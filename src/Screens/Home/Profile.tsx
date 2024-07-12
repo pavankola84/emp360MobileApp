@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
-import {ScrollView} from 'react-native';
+import {Image, ScrollView, StyleSheet} from 'react-native';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import Alert from '../../Components/Alert';
 import Divider from '../../Components/Divider';
 import ListButton from '../../Components/ListButton';
 import Prompt from '../../Components/Prompt';
-
+import {theme, theme2, theme3} from '../../util/theme';
 import useOnlyKeycloak from '../../Hooks/useOnlyKeycloak';
 import useTheme from '../../Hooks/useTheme';
 import {dip} from '../../util/function';
@@ -37,9 +37,11 @@ import {
   ProfileSettingsHead,
   SettingsHeader,
   TermsHeader,
+  QuickAccessHeader,
 } from '../../util/strings';
 import View from '../../Components/View';
 import Text from '../../Components/Text';
+import ImageCard from '../../Components/ImageCard';
 
 const Profile = ({navigation}) => {
   const theme = useTheme();
@@ -56,7 +58,76 @@ const Profile = ({navigation}) => {
       <ScrollView
         style={{
           paddingHorizontal: theme.paddingHorizontal / 2,
+          // paddingVertical: theme.paddingHorizontal / 2,
         }}>
+        <View style={{height: hp(5), marginTop: theme.paddingVertical / 1.5}}>
+          <Text style={{fontSize: dip(24)}}>{QuickAccessHeader}</Text>
+        </View>
+        <View style={styles.cardsContainer}>
+          <ImageCard
+            text="Holidays List"
+            imageSource={require('../../../assets/img/holiday.jpg')}
+            backgroundColor={theme2.colors.surface}
+            textColor={theme.colors.text}
+            path="HolidaysList"
+          />
+          <ImageCard
+            text="Visitors List"
+            imageSource={require('../../../assets/img/visitor.jpg')}
+            backgroundColor={theme2.colors.surface}
+            textColor={theme.colors.text}
+            path="VisitorsList"
+          />
+          <ImageCard
+            text="Sample Text"
+            imageSource={require('../../../assets/img/landscape4.jpg')}
+            backgroundColor={theme2.colors.surface}
+            path="VisitorsList"
+            textColor={theme.colors.text}
+          />
+          <ImageCard
+            text="Sample Text"
+            imageSource={require('../../../assets/img/landscape4.jpg')}
+            backgroundColor={theme2.colors.surface}
+            path="VisitorsList"
+            textColor={theme.colors.text}
+          />
+          <ImageCard
+            text="Sample Text"
+            imageSource={require('../../../assets/img/landscape4.jpg')}
+            backgroundColor={theme2.colors.surface}
+            path="VisitorsList"
+            textColor={theme.colors.text}
+          />
+          <ImageCard
+            text="Sample Text"
+            imageSource={require('../../../assets/img/landscape4.jpg')}
+            backgroundColor={theme2.colors.surface}
+            path="VisitorsList"
+            textColor={theme.colors.text}
+          />
+          <ImageCard
+            text="Sample Text"
+            imageSource={require('../../../assets/img/landscape4.jpg')}
+            backgroundColor={theme2.colors.surface}
+            path="VisitorsList"
+            textColor={theme.colors.text}
+          />
+          <ImageCard
+            text="Sample Text"
+            imageSource={require('../../../assets/img/landscape4.jpg')}
+            backgroundColor={theme2.colors.surface}
+            path="VisitorsList"
+            textColor={theme.colors.text}
+          />
+          <ImageCard
+            text="Sample Text"
+            imageSource={require('../../../assets/img/landscape4.jpg')}
+            backgroundColor={theme2.colors.surface}
+            path="VisitorsList"
+            textColor={theme.colors.text}
+          />
+        </View>
         <View style={{height: hp(5), marginTop: theme.paddingVertical}}>
           <Text style={{fontSize: dip(24)}}>{SettingsHeader}</Text>
         </View>
@@ -227,3 +298,11 @@ const Profile = ({navigation}) => {
 };
 
 export default Profile;
+
+const styles = StyleSheet.create({
+  cardsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    flexWrap: 'wrap',
+  },
+});

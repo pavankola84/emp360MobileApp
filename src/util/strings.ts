@@ -27,6 +27,7 @@ export const AppleButton = 'Apple';
 export const EmailPlaceholder = 'Email';
 export const PasswordPlaceholder = 'Password';
 export const SettingsHeader = 'Settings';
+export const QuickAccessHeader = 'Quick Access';
 export const LegalSettingsHeader = 'Legal';
 export const AccountsHeader = 'Account';
 export const SearchPlaceholder = 'Search ...';
@@ -39,6 +40,8 @@ export const TabLabel = {
 };
 export const ProfileSettingsHead = 'Profile Settings';
 export const SummaryHead = 'Summary';
+export const HolidaysListHead = 'Holidays List';
+export const VisitorsListHead = 'Visitors List';
 export const WFHHead = 'Work From Home Request';
 export const CompOffHead = 'Comp Off Request';
 export const SaveButton = 'Save';

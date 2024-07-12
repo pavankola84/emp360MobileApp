@@ -287,7 +287,9 @@ const ApplyLeave: FC<ApplyLeaveProps> = ({navigation, route}) => {
       timeRange:
         partialLeaveType === 'First Half(10AM - 2PM )'
           ? 'firstHalf'
-          : 'secondHalf',
+          : partialLeaveType === 'Second Half(2PM - 6PM)'
+          ? 'secondHalf'
+          : '',
     };
     // console.log(payload);
     const response: ApiResponse<any> = await applyLeaveEMP(
@@ -688,7 +690,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 14,
-    backgroundColor: 'white',
+    backgroundColor: '#162952',
     shadowColor: '#000',
     marginTop: 8,
     marginRight: 12,
@@ -706,6 +708,6 @@ const styles = StyleSheet.create({
   textSelectedStyle: {
     marginRight: 5,
     fontSize: dip(14),
-    color: '#000000',
+    color: '#fff',
   },
 });

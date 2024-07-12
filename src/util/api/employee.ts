@@ -17,6 +17,7 @@ import {
   COMB_OFF_DATA,
   COMB_OFF_DECISION,
   Form_DATA,
+  APPLY_COMP_OFF,
 } from '../endpoints';
 
 export interface ApiResponse<T> {
@@ -165,6 +166,32 @@ export const applyLeaveEMP = async (
 ): Promise<ApiResponse<any>> => {
   try {
     const url = `${REACT_APP_API_GATEWAY_URL}${APPLY_LEAVE}`;
+    const response: AxiosResponse<any> = await axios.post(url, body, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (response.data.success) {
+      return {
+        success: true,
+        data: response.data.data,
+        message: response.data.message,
+      };
+    } else {
+      return {success: false, message: 'Failed to Post data'};
+    }
+  } catch (error: any) {
+    return {success: false, message: error.message || 'Unknown error occurred'};
+  }
+};
+
+export const applyLeaveCompOffEMP = async (
+  body: {},
+  token: string,
+): Promise<ApiResponse<any>> => {
+  try {
+    const url = `${REACT_APP_API_GATEWAY_URL}${APPLY_COMP_OFF}`;
     const response: AxiosResponse<any> = await axios.post(url, body, {
       headers: {
         Authorization: `Bearer ${token}`,

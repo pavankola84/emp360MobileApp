@@ -130,7 +130,6 @@ const Home: React.FC<Props> = ({navigation}) => {
       setIsLoading(true);
       getLeaveCounts();
       getMyLeaves();
-      console.log('Details leave', leaveDetails);
 
       return () => {};
     }, []),
