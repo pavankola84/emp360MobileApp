@@ -10,6 +10,7 @@ const colors = {
   lightPrimary: '#CFF2E5',
   darkPrimary: '#206F52',
   secondary: '#162952',
+  header: '#182c54',
   text: '#333333',
   lightText: '#FFFFFF',
   placeholder: '#677294',

@@ -130,7 +130,7 @@ const Home: React.FC<Props> = ({navigation}) => {
       setIsLoading(true);
       getLeaveCounts();
       getMyLeaves();
-
+      // console.log('first', upcommingLeaves);
       return () => {};
     }, []),
   );
@@ -326,7 +326,7 @@ const Home: React.FC<Props> = ({navigation}) => {
               <View style={{flex: 1}}>
                 <TabButton
                   color={selectedIndex === 0 ? '#ffffff' : '#000000'}
-                  backgroundColor={selectedIndex === 0 ? '#f15832' : '#eeeeee'}
+                  backgroundColor={selectedIndex === 0 ? '#162952' : '#eeeeee'}
                   onPress={() => setSelectedIndex(0)}
                   text={'Upcoming'}
                 />
@@ -334,7 +334,7 @@ const Home: React.FC<Props> = ({navigation}) => {
               <View style={{flex: 1}}>
                 <TabButton
                   color={selectedIndex === 1 ? '#ffffff' : '#000000'}
-                  backgroundColor={selectedIndex === 1 ? '#f15832' : '#eeeeee'}
+                  backgroundColor={selectedIndex === 1 ? '#162952' : '#eeeeee'}
                   onPress={() => setSelectedIndex(1)}
                   text={'Past'}
                 />

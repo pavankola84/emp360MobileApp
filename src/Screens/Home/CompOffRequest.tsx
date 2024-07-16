@@ -67,6 +67,7 @@ const CompOffRequest: React.FC<Props> = ({navigation}) => {
   const [apiMessage, setApiMessage] = useState<any>('');
   const [holidays, setHolidays] = useState<any>({});
   const [allHolidays, setAllHolidays] = useState<any>([]);
+  const today = new Date();
 
   const refRBSheet = useRef<any>();
 
@@ -384,6 +385,7 @@ const CompOffRequest: React.FC<Props> = ({navigation}) => {
           value={fromDate}
           mode={'date'}
           is24Hour={true}
+          maximumDate={today}
           onChange={handleFromDate}
         />
       )}
@@ -394,11 +396,12 @@ const CompOffRequest: React.FC<Props> = ({navigation}) => {
           value={toDate}
           mode={'date'}
           is24Hour={true}
+          maximumDate={today}
           onChange={handleToDate}
         />
       )}
       <View style={{height: theme.buttonHeight + 4}}>
-        <Header name={CompOffHead} back={false} onBackPress={onBackPress} />
+        <ScreenHeader navigation={navigation} text={CompOffHead} />
       </View>
 
       <View style={{flex: 11, paddingHorizontal: theme.paddingHorizontal / 2}}>

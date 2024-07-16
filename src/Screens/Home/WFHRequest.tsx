@@ -396,7 +396,7 @@ const WFHRequest: React.FC<Props> = ({navigation}) => {
         />
       )}
       <View style={{height: theme.buttonHeight + 4}}>
-        <Header name={WFHHead} back={false} onBackPress={onBackPress} />
+        <ScreenHeader navigation={navigation} text={WFHHead} />
       </View>
 
       <View style={{flex: 11, paddingHorizontal: theme.paddingHorizontal / 2}}>
@@ -636,7 +636,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.2,
     shadowRadius: 1.41,
-
     elevation: 2,
   },
   placeholderStyle: {

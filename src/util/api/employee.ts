@@ -49,6 +49,52 @@ export const fetchDataUsingFormId = async (
   }
 };
 
+export const fetchDataUsingEmployeeId = async (
+  empId: string,
+  token: string,
+  formId: string,
+): Promise<ApiResponse<any>> => {
+  try {
+    const url = `${REACT_APP_API_GATEWAY_URL}${Form_RUNTIME_DATA}${formId}&page=0&size=10000&filter=formData.employeeId:${empId}`;
+    console.log('helo', url);
+    const response: AxiosResponse<any> = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (response.data.success) {
+      return {success: true, data: response.data.data};
+    } else {
+      return {success: false, message: 'Failed to fetch data'};
+    }
+  } catch (error: any) {
+    return {success: false, message: error.message || 'Unknown error occurred'};
+  }
+};
+
+export const fetchDataWithoutEmail = async (
+  token: string,
+  formId: string,
+): Promise<ApiResponse<any>> => {
+  try {
+    const url = `${REACT_APP_API_GATEWAY_URL}${Form_RUNTIME_DATA}${formId}`;
+    const response: AxiosResponse<any> = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (response.data.success) {
+      return {success: true, data: response.data.data};
+    } else {
+      return {success: false, message: 'Failed to fetch data'};
+    }
+  } catch (error: any) {
+    return {success: false, message: error.message || 'Unknown error occurred'};
+  }
+};
+
 export const fetchLeavesData = async (
   emailId: string,
   token: string,

@@ -42,6 +42,7 @@ export const ProfileSettingsHead = 'Profile Settings';
 export const SummaryHead = 'Summary';
 export const HolidaysListHead = 'Holidays List';
 export const VisitorsListHead = 'Visitors List';
+export const CompOffRequestsHead = 'Comp Off Requests';
 export const WFHHead = 'Work From Home Request';
 export const CompOffHead = 'Comp Off Request';
 export const SaveButton = 'Save';

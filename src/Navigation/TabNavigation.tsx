@@ -36,15 +36,7 @@ const Tab = createBottomTabNavigator();
 
 const tabBarIcon =
   (name, Icon) =>
-  ({
-    focused,
-    color,
-    size,
-  }: {
-    focused: boolean;
-    color: string; // Defines fab icon color
-    size: number;
-  }) =>
+  ({focused, color, size}: {focused: boolean; color: string; size: number}) =>
     (
       <>
         <Icon
