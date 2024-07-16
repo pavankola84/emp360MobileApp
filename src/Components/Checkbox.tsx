@@ -6,7 +6,7 @@ import {Tick} from '../util/icons';
 import {ThemeOverride} from '../util/theme';
 
 const Checkbox = (
-  props: {checked: boolean; theme: ThemeOverride} & ViewProps
+  props: {checked: boolean; theme: ThemeOverride} & ViewProps,
 ) => {
   const {checked, theme, ...viewProps} = props;
   return (
@@ -20,6 +20,8 @@ const Checkbox = (
           borderRadius: Math.min(theme.roundness, dip(6)),
           alignItems: 'center',
           justifyContent: 'center',
+          borderColor: theme.colors.borderColor1,
+          borderWidth: 2,
         },
         viewProps.style,
       ]}>

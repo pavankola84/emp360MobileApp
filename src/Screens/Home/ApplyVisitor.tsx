@@ -3,47 +3,29 @@ import {
   Dimensions,
   Image,
   ScrollView,
-  StatusBar,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
-  Modal,
-  FlatList,
-  Pressable,
   Alert,
 } from 'react-native';
+// import CheckBox from '@react-native-community/checkbox';
 import Header from '../../Components/Header';
 import {theme} from '../../util/theme';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import SelectDropdown from 'react-native-select-dropdown';
 import PrimaryButton from '../../Components/PrimaryButton';
 import {dip} from '../../util/function';
-import Fonts from '../../util/Fonts';
-import ApplyLeaveTextComponent from '../../Components/ApplyLeaveTextComponent';
-import ApplyLeaveDropdown from '../../Components/ApplyLeaveDropdown';
-import ApplyTextComponent from '../../Components/ApplyTextComponent';
-import {MultiSelect, Dropdown} from 'react-native-element-dropdown';
+import {Dropdown} from 'react-native-element-dropdown';
 import {ChevronDown, Cross} from '../../util/icons';
 import useOnlyKeycloak from '../../Hooks/useOnlyKeycloak';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import {
-  ApiResponse,
-  applyLeaveEMP,
-  fetchLeavesData,
-  fetchRuntimeFormData,
-  fetchUsers,
-} from '../../util/api/employee';
-import {HOLIDAYS_FORMID} from '../../util/endpoints';
+import {ApiResponse, fetchUsers} from '../../util/api/employee';
 import {useFocusEffect} from '@react-navigation/native';
-import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
-import SuccessImage from '../../../assets/img/Success.png';
-import FailImage from '../../../assets/img/Fail.png';
-import ToastManager, {Toast} from 'toastify-react-native';
 import Loader from '../../Components/Loader';
-
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import dayjs from 'dayjs';
+import {launchCamera} from 'react-native-image-picker';
+import CheckBox from '@react-native-community/checkbox';
 
 const wd: number = Dimensions.get('window').width;
 
@@ -58,11 +40,11 @@ interface Errors {
   phoneNumber?: string;
   host?: string;
   photoUri?: string;
+  date?: string;
 }
 
 const ApplyVisitor: FC<ApplyVisitorProps> = ({navigation, route}) => {
   const {keycloak, profile}: any = useOnlyKeycloak();
-  const [fromDate, setFromDate] = useState<Date>(new Date());
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const refRBSheet = useRef<any>();
@@ -73,14 +55,35 @@ const ApplyVisitor: FC<ApplyVisitorProps> = ({navigation, route}) => {
   const [email, setEmail] = useState('');
   const [host, setHost] = useState('');
   const [hostName, setHostName] = useState('');
-  const [hostEmail, setHostEmail] = useState('');
   const [reason, setReason] = useState('');
   const [errors, setErrors] = useState<Errors>({});
-  const [showPicker, setShowPicker] = useState(false);
-  const [search, setSearch] = useState('');
   const [photoUri, setPhotoUri] = useState('');
   const [emails, setEmails] = useState<Array<any>>([]);
-  const [selectedEmail, setSelectedEmail] = useState<Array<any>>([]);
+  const [immediateChecked, setImmediateChecked] = useState(false);
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [date, setDate] = useState<Date | null>(null);
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleConfirm = (selectedDate: Date) => {
+    setDate(selectedDate);
+    hideDatePicker();
+  };
+
+  const handleImmediateChange = (value: boolean) => {
+    setImmediateChecked(value);
+    if (value) {
+      setDate(new Date());
+    }
+  };
+
+  const formatDateTime = (dateTime: Date | null) => {
+    return dateTime
+      ? dayjs(dateTime).format('YYYY-MM-DD HH:mm')
+      : 'Scheduled Date & Time*';
+  };
 
   const getUsers = async () => {
     try {
@@ -106,6 +109,7 @@ const ApplyVisitor: FC<ApplyVisitorProps> = ({navigation, route}) => {
 
   const handleSubmit = async () => {
     const newErrors: Errors = {};
+
     if (!firstName) {
       newErrors.firstName = 'First Name is required.';
     }
@@ -131,6 +135,9 @@ const ApplyVisitor: FC<ApplyVisitorProps> = ({navigation, route}) => {
     if (!photoUri) {
       newErrors.photoUri = 'Visitor Image is required';
     }
+    if (!date) {
+      newErrors.date = "Visitor's Scheduled visit date and time are required";
+    }
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -145,7 +152,10 @@ const ApplyVisitor: FC<ApplyVisitorProps> = ({navigation, route}) => {
       host,
       reason,
       photoUri,
+      date,
     });
+
+    const newErrors2: Errors = {};
 
     setFirstName('');
     setLastName('');
@@ -155,6 +165,9 @@ const ApplyVisitor: FC<ApplyVisitorProps> = ({navigation, route}) => {
     setHostName('');
     setReason('');
     setPhotoUri('');
+    setDate(null);
+    setImmediateChecked(false);
+    setErrors(newErrors2);
   };
 
   const openCamera = () => {
@@ -214,6 +227,14 @@ const ApplyVisitor: FC<ApplyVisitorProps> = ({navigation, route}) => {
   return (
     <View style={styles.container}>
       <Loader isLoading={isLoading} />
+      {isDatePickerVisible && (
+        <DateTimePickerModal
+          isVisible={isDatePickerVisible}
+          mode="datetime"
+          onConfirm={handleConfirm}
+          onCancel={hideDatePicker}
+        />
+      )}
       <View style={{flex: 1}}>
         <Header name={'Visitor Pass'} back={false} onBackPress={onBackPress} />
       </View>
@@ -270,6 +291,74 @@ const ApplyVisitor: FC<ApplyVisitorProps> = ({navigation, route}) => {
               style={styles.inputField}
             />
           </View>
+          <Text style={styles.heading}>
+            Visitor's scheduled visit date and time
+          </Text>
+          {errors.date && <Text style={styles.error}>{errors.date}</Text>}
+          <View style={{flexDirection: 'row'}}>
+            <View
+              style={{
+                flex: 3,
+                height: dip(60),
+                justifyContent: 'space-evenly',
+                borderWidth: 1,
+                borderRadius: 10,
+                marginTop: dip(10),
+                marginRight: dip(10),
+                paddingHorizontal: dip(10),
+                borderColor: '#a4cbfc',
+                backgroundColor: '#f5f9ff',
+              }}>
+              <View style={{flex: 1}}>
+                <TouchableOpacity
+                  onPress={() => setDatePickerVisibility(true)}
+                  style={{
+                    flex: 1,
+                    width: '100%',
+                    justifyContent: 'center',
+                  }}
+                  disabled={immediateChecked}>
+                  <Text
+                    style={{
+                      // padding: 10,
+                      fontSize: dip(16),
+                      color: '#000',
+                    }}>
+                    {formatDateTime(date)}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+            <View
+              style={{
+                flex: 2,
+                height: dip(60),
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginVertical: dip(10),
+                paddingHorizontal: dip(10),
+              }}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                <CheckBox
+                  value={immediateChecked}
+                  onValueChange={handleImmediateChange}
+                />
+                <Text
+                  style={{
+                    fontSize: 20,
+                    fontWeight: 400,
+                    color: '#000',
+                  }}>
+                  Immediate
+                </Text>
+              </View>
+            </View>
+          </View>
           <Text style={styles.heading}>Host Details</Text>
           {errors.host && <Text style={styles.error}>{errors.host}</Text>}
           <View
@@ -321,13 +410,6 @@ const ApplyVisitor: FC<ApplyVisitorProps> = ({navigation, route}) => {
                   setHost(item);
                 }}
                 renderItem={renderItem}
-                // renderSelectedItem={item => (
-                //   <TouchableOpacity onPress={() => unSelect && unSelect(item)}>
-                //     <View style={styles.selectedStyle}>
-                //       <Text style={styles.textSelectedStyle}>{item.label}</Text>
-                //     </View>
-                //   </TouchableOpacity>
-                // )}
               />
             </View>
           </View>
@@ -485,7 +567,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   selectedStyle: {
-    // flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 14,
@@ -517,7 +598,6 @@ const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
     justifyContent: 'center',
-    // alignItems: 'center',
   },
   heading: {
     fontSize: 16,
