@@ -36,9 +36,10 @@ import {
   Content,
   HomeIcon,
   TermsIcon,
-  VisitorIcon,
+  VisitorWhiteIcon,
   WFHIcon,
   CompOffIcon,
+  VisitorBlackIcon,
 } from '../../util/icons';
 import ButtonIcon from '../../Components/ButtonIconWithTitle';
 import ButtonIconWithTitle from '../../Components/ButtonIconWithTitle';
@@ -130,7 +131,6 @@ const Home: React.FC<Props> = ({navigation}) => {
       setIsLoading(true);
       getLeaveCounts();
       getMyLeaves();
-      // console.log('first', upcommingLeaves);
       return () => {};
     }, []),
   );
@@ -199,7 +199,7 @@ const Home: React.FC<Props> = ({navigation}) => {
       setShowDialog(false);
       setStatus('');
     } else {
-      console.log('something went wronga');
+      console.log('something went wrong');
       Toast.error('something went wrong,Please try again!', 'top');
       setShowDialog(false);
       setStatus('');
@@ -288,20 +288,28 @@ const Home: React.FC<Props> = ({navigation}) => {
                     leaveType: 1,
                   })
                 }
-                icon={<Content height={dip(27)} width={dip(27)} color="#fff" />}
+                icon={
+                  <Content height={dip(27)} width={dip(27)} color="#162952" />
+                }
                 text={'Apply Leave'}
               />
               <ButtonIconWithTitle
                 color={'#000000'}
                 onPress={() => navigation.navigate('WFHRequest')}
-                icon={<WFHIcon height={dip(32)} width={dip(32)} color="#fff" />}
+                icon={
+                  <WFHIcon height={dip(32)} width={dip(32)} color="#162952" />
+                }
                 text={'WFH Request'}
               />
               <ButtonIconWithTitle
                 color={'#000000'}
                 onPress={() => navigation.navigate('CompOffRequest')}
                 icon={
-                  <CompOffIcon height={dip(32)} width={dip(32)} color="#fff" />
+                  <CompOffIcon
+                    height={dip(32)}
+                    width={dip(32)}
+                    color="#162952"
+                  />
                 }
                 text={'Comp Off Request'}
               />
@@ -309,7 +317,11 @@ const Home: React.FC<Props> = ({navigation}) => {
                 color={'#000000'}
                 onPress={() => navigation.navigate('Visitors')}
                 icon={
-                  <VisitorIcon height={dip(32)} width={dip(32)} color="#fff" />
+                  <VisitorBlackIcon
+                    height={dip(32)}
+                    width={dip(32)}
+                    color="#162952"
+                  />
                 }
                 text={'Visitor Pass'}
               />
@@ -344,7 +356,7 @@ const Home: React.FC<Props> = ({navigation}) => {
                   <TabButton
                     color={selectedIndex === 2 ? '#ffffff' : '#000000'}
                     backgroundColor={
-                      selectedIndex === 2 ? '#f15832' : '#eeeeee'
+                      selectedIndex === 2 ? '#162952' : '#eeeeee'
                     }
                     onPress={() => setSelectedIndex(2)}
                     text={'Lead'}

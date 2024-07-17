@@ -59,7 +59,7 @@ const ButtonIconWithTitle: React.FC<ButtonIconWithTitleProps> = ({
           justifyContent: 'center',
           alignItems: 'center',
           borderWidth: 1,
-          backgroundColor: backgroundColor ?? '#162952',
+          backgroundColor: backgroundColor ?? '#fff',
         }}
         cardMaxElevation={2}
         cornerRadius={10}>

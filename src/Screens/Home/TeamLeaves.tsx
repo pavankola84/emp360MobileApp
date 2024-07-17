@@ -191,7 +191,7 @@ const TeamLeaves: React.FC<TeamLeavesProps> = ({navigation}) => {
           <View style={{flex: 1}}>
             <TabButton
               color={selectedIndex == 0 ? '#ffffff' : '#000000'}
-              backgroundColor={selectedIndex == 0 ? '#f15832' : '#eeeeee'}
+              backgroundColor={selectedIndex == 0 ? '#162952' : '#eeeeee'}
               onPress={() => setSelectedIndex(0)}
               text={'Leaves'}
             />
@@ -199,7 +199,7 @@ const TeamLeaves: React.FC<TeamLeavesProps> = ({navigation}) => {
           <View style={{flex: 1}}>
             <TabButton
               color={selectedIndex == 1 ? '#ffffff' : '#000000'}
-              backgroundColor={selectedIndex == 1 ? '#f15832' : '#eeeeee'}
+              backgroundColor={selectedIndex == 1 ? '#162952' : '#eeeeee'}
               onPress={() => setSelectedIndex(1)}
               text={'WFH'}
             />
@@ -208,9 +208,9 @@ const TeamLeaves: React.FC<TeamLeavesProps> = ({navigation}) => {
           <View style={{flex: 1}}>
             <TabButton
               color={selectedIndex == 2 ? '#ffffff' : '#000000'}
-              backgroundColor={selectedIndex == 2 ? '#f15832' : '#eeeeee'}
+              backgroundColor={selectedIndex == 2 ? '#162952' : '#eeeeee'}
               onPress={() => setSelectedIndex(2)}
-              text={'Comboff'}
+              text={'Comp off'}
             />
           </View>
         </View>
@@ -338,7 +338,7 @@ const TeamLeaves: React.FC<TeamLeavesProps> = ({navigation}) => {
                       color: '#000000',
                       fontWeight: 'bold',
                     }}>
-                    No Comb-off requests
+                    No Comp-off requests
                   </Text>
                 </View>
               )}

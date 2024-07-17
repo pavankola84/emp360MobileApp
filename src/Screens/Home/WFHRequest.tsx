@@ -399,7 +399,7 @@ const WFHRequest: React.FC<Props> = ({navigation}) => {
         <ScreenHeader navigation={navigation} text={WFHHead} />
       </View>
 
-      <View style={{flex: 11, paddingHorizontal: theme.paddingHorizontal / 2}}>
+      <View style={{flex: 11}}>
         <ScrollView
           style={{paddingHorizontal: 20}}
           contentContainerStyle={{paddingVertical: 10}}

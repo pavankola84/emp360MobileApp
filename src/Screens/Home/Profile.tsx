@@ -244,7 +244,7 @@ const Profile = ({navigation}) => {
             position={'bottom'}
           /> */}
         </View>
-        <View style={{height: hp(10)}} />
+        <View style={{height: hp(4)}} />
       </ScrollView>
       <Prompt
         title={LogoutConfirm}

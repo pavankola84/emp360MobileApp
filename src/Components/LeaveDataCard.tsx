@@ -36,7 +36,7 @@ const LeaveDataCard: FC<LeaveDataCardProps> = ({name, avaliable, consumed}) => {
     <View
       style={{
         width: wd * 0.44,
-        height: dip(120),
+        height: dip(100),
         marginVertical: 10,
         borderRadius: dip(10),
         borderWidth: 3,
@@ -58,6 +58,7 @@ const LeaveDataCard: FC<LeaveDataCardProps> = ({name, avaliable, consumed}) => {
               color: '#000000',
               fontFamily: Fonts.RobotoBold,
               fontSize: dip(16),
+              fontWeight: 700,
             }}>
             {name}
           </Text>
@@ -83,6 +84,7 @@ const LeaveDataCard: FC<LeaveDataCardProps> = ({name, avaliable, consumed}) => {
                 color: '#0d9903',
                 fontFamily: Fonts.RobotoBold,
                 fontSize: dip(14),
+                // alignSelf: 'center',
               }}>
               {avaliable}
             </Text>
@@ -101,6 +103,7 @@ const LeaveDataCard: FC<LeaveDataCardProps> = ({name, avaliable, consumed}) => {
                 color: '#ff0019',
                 fontFamily: Fonts.RobotoBold,
                 fontSize: dip(14),
+                // alignSelf: 'center',
               }}>
               {consumed}
             </Text>

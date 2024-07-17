@@ -23,7 +23,7 @@ import {
   ProfileIcon,
   Receipts,
   SendMessage,
-  VisitorIcon,
+  VisitorBlackIcon,
 } from '../util/icons';
 
 import {BottomFabBar} from 'rn-wave-bottom-bar';
@@ -38,14 +38,45 @@ const tabBarIcon =
   (name, Icon) =>
   ({focused, color, size}: {focused: boolean; color: string; size: number}) =>
     (
-      <>
+      <View
+        style={{
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: focused ? '#e6eeff' : 'transparent',
+          // borderWidth: 3,
+          borderRadius: 12,
+          width: '90%',
+          height: '140%',
+        }}>
         <Icon
-          height={dip(30)}
-          width={dip(30)}
-          color={focused ? '#ffffff' : '#ffffff'}
+          height={dip(20)}
+          width={dip(20)}
+          color={focused ? '#162952' : '#000'}
+          strokeWidth={focused ? 2 : 1}
         />
-        {focused ? null : <Text style={{color: '#ffffff'}}>{name}</Text>}
-      </>
+        {focused ? (
+          <Text
+            style={{
+              color: '#162952',
+              fontSize: 10,
+              marginVertical: 5,
+              textTransform: 'uppercase',
+              fontWeight: 'bold',
+            }}>
+            {name}
+          </Text>
+        ) : (
+          <Text
+            style={{
+              color: '#000',
+              fontSize: 10,
+              marginVertical: 5,
+              textTransform: 'uppercase',
+            }}>
+            {name}
+          </Text>
+        )}
+      </View>
     );
 
 function TabNavigation() {
@@ -60,44 +91,103 @@ function TabNavigation() {
   }, []);
 
   return (
+    // <Tab.Navigator
+    //   screenOptions={{
+    //     headerShown: false,
+    //     tabBarActiveTintColor: '#162952',
+    //     tabBarActiveBackgroundColor: '#162952',
+
+    //     // tabBarInactiveBackgroundColor: 'red',
+    //   }}
+    //   tabBar={props => (
+    //     <View style={{height: dip(70)}}>
+    //       <BottomFabBar
+    //         mode={'default'}
+    //         isRtl={false}
+    //         // style={{height: dip(50)}}
+    //         // Add Shadow for active tab bar button
+    //         focusedButtonStyle={{
+    //           shadowColor: '#000',
+    //           shadowOffset: {
+    //             width: 0,
+    //             height: 7,
+    //           },
+    //           shadowOpacity: 0.41,
+    //           shadowRadius: 9.11,
+    //           elevation: 14,
+    //         }}
+    //         // - You can add the style below to show screen content under the tab-bar
+    //         // - It will makes the "transparent tab bar" effect.
+    //         bottomBarContainerStyle={{
+    //           height: dip(70),
+    //           position: 'absolute',
+    //           bottom: -3,
+    //           left: 0,
+    //           right: 0,
+    //         }}
+    //         {...props}
+    //       />
+    //     </View>
+    //   )}>
+    //   <Tab.Screen
+    //     options={{
+    //       tabBarIcon: tabBarIcon('Home', HomeIcon),
+    //     }}
+    //     name="Home"
+    //     component={HomeStack}
+    //   />
+    //   <Tab.Screen
+    //     options={{
+    //       tabBarIcon: tabBarIcon('Apply Leave', Content),
+    //     }}
+    //     name="ApplyLeave"
+    //     component={ApplyLeave}
+    //   />
+
+    //   <Tab.Screen
+    //     options={{
+    //       tabBarIcon: tabBarIcon('Visitors', VisitorBlackIcon),
+    //     }}
+    //     name="Visitors"
+    //     component={ApplyVisitor}
+    //   />
+
+    //   {showLead && (
+    //     <Tab.Screen
+    //       options={{
+    //         tabBarIcon: tabBarIcon('Team Leaves', Receipts),
+    //       }}
+    //       name="TeamLeaves"
+    //       component={TeamLeaves}
+    //     />
+    //   )}
+
+    //   <Tab.Screen
+    //     options={{
+    //       tabBarIcon: tabBarIcon('My Profile', ProfileIcon),
+    //     }}
+    //     name="MyProfile"
+    //     component={ProfileStack}
+    //   />
+    // </Tab.Navigator>
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: '#162952',
-        tabBarActiveBackgroundColor: '#162952',
-
-        // tabBarInactiveBackgroundColor: 'red',
-      }}
-      tabBar={props => (
-        <View style={{height: dip(70)}}>
-          <BottomFabBar
-            mode={'default'}
-            isRtl={false}
-            // style={{height: dip(50)}}
-            // Add Shadow for active tab bar button
-            focusedButtonStyle={{
-              shadowColor: '#000',
-              shadowOffset: {
-                width: 0,
-                height: 7,
-              },
-              shadowOpacity: 0.41,
-              shadowRadius: 9.11,
-              elevation: 14,
-            }}
-            // - You can add the style below to show screen content under the tab-bar
-            // - It will makes the "transparent tab bar" effect.
-            bottomBarContainerStyle={{
-              height: dip(70),
-              position: 'absolute',
-              bottom: -3,
-              left: 0,
-              right: 0,
-            }}
-            {...props}
-          />
-        </View>
-      )}>
+        tabBarInactiveBackgroundColor: '#fff',
+        tabBarLabelStyle: {
+          fontSize: 12,
+          marginVertical: 5,
+          textTransform: 'uppercase',
+          display: 'none',
+        },
+        tabBarStyle: {
+          // borderTopWidth: 1,
+          // borderColor: '#ccc',
+          height: 60,
+          padding: 12,
+        },
+      }}>
       <Tab.Screen
         options={{
           tabBarIcon: tabBarIcon('Home', HomeIcon),
@@ -112,15 +202,13 @@ function TabNavigation() {
         name="ApplyLeave"
         component={ApplyLeave}
       />
-
       <Tab.Screen
         options={{
-          tabBarIcon: tabBarIcon('Visitors', VisitorIcon),
+          tabBarIcon: tabBarIcon('Visitors', VisitorBlackIcon),
         }}
         name="Visitors"
         component={ApplyVisitor}
       />
-
       {showLead && (
         <Tab.Screen
           options={{
@@ -130,7 +218,6 @@ function TabNavigation() {
           component={TeamLeaves}
         />
       )}
-
       <Tab.Screen
         options={{
           tabBarIcon: tabBarIcon('My Profile', ProfileIcon),

@@ -620,7 +620,7 @@ const ApplyLeave: FC<ApplyLeaveProps> = ({navigation, route}) => {
           <View
             style={{
               flex: 1,
-              height: dip(70),
+              height: dip(60),
               alignItems: 'center',
             }}>
             <PrimaryButton onPress={() => handleApplyLeave()} text={'Submit'} />

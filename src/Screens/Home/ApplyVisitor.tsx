@@ -482,7 +482,7 @@ const ApplyVisitor: FC<ApplyVisitorProps> = ({navigation, route}) => {
           <View
             style={{
               flex: 1,
-              height: dip(70),
+              height: dip(65),
               alignItems: 'center',
             }}>
             <PrimaryButton

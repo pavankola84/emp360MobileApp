@@ -20,17 +20,22 @@ const TabButton = ({text, onPress, backgroundColor, color}) => {
       style={[
         {
           height: theme.buttonHeight,
+          // borderWidth: 2,
+          alignItems: 'center',
+          justifyContent: 'center',
         },
       ]}>
       <View
         style={[
           {
-            height: theme.buttonHeight,
+            height: theme.buttonHeight - 10,
+            width: '95%',
             borderRadius: theme.roundness,
             backgroundColor: backgroundColor,
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'center',
+            elevation: backgroundColor === '#162952' ? 2 : 0,
           },
         ]}>
         <Text

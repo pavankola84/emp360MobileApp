@@ -34,7 +34,8 @@ import Star from '../../assets/svg/Star.svg';
 import Play from '../../assets/svg/Play.svg';
 import File from '../../assets/svg/File.svg';
 import EditIcon from '../../assets/svg/EditIcon.svg';
-import VisitorIcon from '../../assets/svg/Visitor.svg';
+import VisitorWhiteIcon from '../../assets/svg/VisitorWhite.svg';
+import VisitorBlackIcon from '../../assets/svg/VisitorBlack.svg';
 import WFHIcon from '../../assets/svg/WFHIcon.svg';
 import CompOffIcon from '../../assets/svg/CompOffIcon.svg';
 
@@ -75,7 +76,8 @@ export {
   Play,
   File,
   EditIcon,
-  VisitorIcon,
+  VisitorWhiteIcon,
+  VisitorBlackIcon,
   WFHIcon,
   CompOffIcon,
 };

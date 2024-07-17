@@ -101,7 +101,16 @@ const AppliedCard: FC<AppliedCardProps> = ({
                 justifyContent: 'space-between',
                 alignItems: 'center',
               }}>
-              <View style={{flex: 2}}>
+              <View
+                style={{
+                  flex: 2,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  width: '60%',
+                  // borderWidth: 3,
+                  // justifyContent: 'space-between',
+                  gap: 16,
+                }}>
                 <Text
                   numberOfLines={2}
                   ellipsizeMode="tail"
@@ -114,6 +123,20 @@ const AppliedCard: FC<AppliedCardProps> = ({
                   }}>
                   {item?.leaveType ?? 'Comb-0ff'}
                 </Text>
+                {item?.leaveCategory ? (
+                  <View>
+                    <Text
+                      style={{
+                        fontSize: dip(14),
+                        fontFamily: Fonts.RobotoMedium,
+                        fontWeight: '400',
+                        color: '#777777',
+                        textTransform: 'capitalize',
+                      }}>
+                      {item?.leaveCategory}
+                    </Text>
+                  </View>
+                ) : null}
               </View>
 
               <View>
@@ -135,20 +158,6 @@ const AppliedCard: FC<AppliedCardProps> = ({
                 </Text>
               </View>
             </View>
-            {item?.leaveCategory ? (
-              <View>
-                <Text
-                  style={{
-                    fontSize: dip(14),
-                    fontFamily: Fonts.RobotoMedium,
-                    fontWeight: '400',
-                    color: '#777777',
-                    textTransform: 'capitalize',
-                  }}>
-                  {item?.leaveCategory}
-                </Text>
-              </View>
-            ) : null}
 
             {item?.timeRange ? (
               <View>
