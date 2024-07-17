@@ -39,6 +39,7 @@ const AppliedCard: FC<AppliedCardProps> = ({
   approveLoading,
   rejectLoading,
 }) => {
+  console.log(item);
   return (
     <View
       style={{
@@ -121,7 +122,7 @@ const AppliedCard: FC<AppliedCardProps> = ({
                     color: '#000000',
                     textTransform: 'capitalize',
                   }}>
-                  {item?.leaveType ?? 'Comb-0ff'}
+                  {item?.leaveType ?? 'Comp-0ff'}
                 </Text>
                 {item?.leaveCategory ? (
                   <View>
@@ -248,18 +249,35 @@ const AppliedCard: FC<AppliedCardProps> = ({
                   />
                 </View>
               ) : null}
+              {item?.leaveType ? (
+                <View style={{flex: 1, marginHorizontal: dip(10)}}>
+                  <BlankButton
+                    rejectLoading={rejectLoading}
+                    loading={rejectLoading}
+                    backgroundColor={'#ffffff'}
+                    color={'#000000'}
+                    onPress={onPress}
+                    text={negativeButtonName ?? 'Cancel'}
+                  />
+                </View>
+              ) : null}
+            </View>
+            {item?.compOffCount !== undefined &&
+            !isLead &&
+            item?.status !== 'rejected' &&
+            item?.status !== 'cancelled' &&
+            item?.status !== 'pending' ? (
               <View style={{flex: 1, marginHorizontal: dip(10)}}>
                 <BlankButton
                   rejectLoading={rejectLoading}
                   loading={rejectLoading}
-                  backgroundColor={'#ffffff'}
-                  color={'#000000'}
+                  backgroundColor={'#134984'}
+                  color={'#ffffff'}
                   onPress={onPress}
-                  text={negativeButtonName ?? 'Cancel'}
+                  text={'Apply Leave'}
                 />
               </View>
-            </View>
-            {/* ) : null} */}
+            ) : null}
           </View>
         </View>
       </CardView>

@@ -78,20 +78,20 @@ const Profile = ({navigation}) => {
             textColor={theme.colors.text}
             path="VisitorsList"
           />
-          {/* <ImageCard
+          <ImageCard
             text="Comp Off Requests"
             imageSource={require('../../../assets/img/comp-off.jpg')}
             backgroundColor={theme2.colors.surface}
             path="CompOffRequests"
             textColor={theme.colors.text}
-          /> */}
-          <ImageCard
+          />
+          {/* <ImageCard
             text="Sample Text"
             imageSource={require('../../../assets/img/landscape4.jpg')}
             backgroundColor={theme2.colors.surface}
             path="VisitorsList"
             textColor={theme.colors.text}
-          />
+          /> */}
           <ImageCard
             text="Sample Text"
             imageSource={require('../../../assets/img/landscape4.jpg')}

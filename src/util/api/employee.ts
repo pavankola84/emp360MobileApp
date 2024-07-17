@@ -56,7 +56,6 @@ export const fetchDataUsingEmployeeId = async (
 ): Promise<ApiResponse<any>> => {
   try {
     const url = `${REACT_APP_API_GATEWAY_URL}${Form_RUNTIME_DATA}${formId}&page=0&size=10000&filter=formData.employeeId:${empId}`;
-    console.log('helo', url);
     const response: AxiosResponse<any> = await axios.get(url, {
       headers: {
         Authorization: `Bearer ${token}`,

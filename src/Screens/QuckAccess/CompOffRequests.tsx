@@ -1,8 +1,7 @@
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import useTheme from '../../Hooks/useTheme';
 import useOnlyKeycloak from '../../Hooks/useOnlyKeycloak';
-import {useFocusEffect} from '@react-navigation/native';
 import Loader from '../../Components/Loader';
 import ScreenHeader from '../../Components/ScreenHeader';
 import {
@@ -17,9 +16,18 @@ import {
 } from '../../util/constants';
 import {
   ApiResponse,
+  cancelLeaveEMP,
   fetchDataUsingEmployeeId,
   fetchDataUsingFormId,
 } from '../../util/api/employee';
+import Upcoming from '../../Components/Upcoming';
+import Prompt from '../../Components/Prompt';
+import {Toast} from 'toastify-react-native';
+
+interface MyLeave {
+  id: string;
+  [key: string]: any;
+}
 
 const CompOffRequests = ({navigation}) => {
   const theme = useTheme();
@@ -27,9 +35,14 @@ const CompOffRequests = ({navigation}) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [details, setDetails] = useState([]);
   const [empId, setEmpId] = useState('');
-  const [compOffRequests, setCompOffRequests] = useState([]);
+  const [compOffRequests, setCompOffRequests] = useState<MyLeave[]>([]);
+  const [id, setId] = useState('');
+  const [status, setStatus] = useState('');
+  const [showDialog, setShowDialog] = useState(false);
+  const [refresh, setRefresh] = useState(false);
 
   const getProfileDetails = async () => {
+    setIsLoading(true);
     try {
       const response: ApiResponse<any> = await fetchDataUsingFormId(
         profile.email,
@@ -38,20 +51,20 @@ const CompOffRequests = ({navigation}) => {
       );
       if (response.success) {
         const data = response.data;
-        setIsLoading(false);
-        await setDetails(data?.content[0]?.formData);
-        await setEmpId(data?.content[0]?.formData?.empId);
+        setDetails(data?.content[0]?.formData);
+        setEmpId(data?.content[0]?.formData?.empId);
       } else {
-        setIsLoading(false);
         console.error('Failed to fetch Profile Details:', response.message);
       }
     } catch (error: any) {
-      setIsLoading(false);
       console.error('Error fetching Profile Details:', error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const getCompOffRequests = async () => {
+  const getCompOffRequests = async (empId: string) => {
+    setIsLoading(true);
     try {
       const response: ApiResponse<any> = await fetchDataUsingEmployeeId(
         empId,
@@ -59,11 +72,16 @@ const CompOffRequests = ({navigation}) => {
         EMP_COMP_OFF_REQUESTS_FORM_ID,
       );
       if (response.success) {
-        const data = response.data;
+        const data = response.data.content;
+        const formattedData: MyLeave[] = data?.map((item: any) => ({
+          id: item?.id,
+          ...item?.formData,
+        }));
         setIsLoading(false);
-        setCompOffRequests(data?.content);
+        setCompOffRequests(formattedData);
       } else {
         setIsLoading(false);
+        setCompOffRequests([]);
         console.error('Failed to fetch Comp Off Requests:', response.message);
       }
     } catch (error: any) {
@@ -72,26 +90,74 @@ const CompOffRequests = ({navigation}) => {
     }
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      await getProfileDetails();
-      await getCompOffRequests();
-    };
+  const handleCancelLeave = async () => {
+    setIsLoading(true);
+    const response: any = await cancelLeaveEMP(keycloak?.token, id?.id);
+    if (response?.success) {
+      setRefresh(prevState => !prevState);
+      getCompOffRequests(empId);
+      setShowDialog(false);
+      setStatus('');
+      setIsLoading(false);
+    } else {
+      console.log('something went wrong');
+      Toast.error('something went wrong,Please try again!', 'top');
+      setShowDialog(false);
+      setStatus('');
+      setIsLoading(false);
+    }
+  };
 
-    fetchData();
+  useEffect(() => {
+    getProfileDetails();
+  }, []);
+
+  useEffect(() => {
+    if (empId) {
+      getCompOffRequests(empId);
+    }
   }, [empId]);
-
-  useEffect(() => {
-    console.log('sss', compOffRequests);
-  }, [compOffRequests]);
 
   return (
     <View style={{flex: 1, height: theme.buttonHeight}}>
       <Loader isLoading={isLoading} />
       <ScreenHeader navigation={navigation} text={CompOffRequestsHead} />
       <ScrollView style={styles.container}>
-        <Text>Comp-Off Requests List</Text>
+        <View style={{width: '100%'}}>
+          <Upcoming
+            id={id?.id}
+            status={status}
+            rejectLoading={status == 'reject' ? true : false}
+            onPress={id => {
+              setIsLoading(true);
+              setStatus('reject');
+              setShowDialog(true);
+              setId(id);
+            }}
+            data={compOffRequests}
+          />
+        </View>
       </ScrollView>
+      <Prompt
+        title={'Are you sure you want to cancel your Leave Request?'}
+        onPressNegative={() => {
+          setShowDialog(false);
+          setStatus('');
+        }}
+        onPressPositive={async () => {
+          if (keycloak === undefined) {
+            return;
+          }
+          setShowDialog(false);
+          handleCancelLeave();
+        }}
+        negativetitle="No"
+        positiveTitle={status == 'approve' ? 'Approve' : 'Yes'}
+        visible={showDialog}
+        setVisible={visible => {
+          setShowDialog(visible);
+        }}
+      />
     </View>
   );
 };
@@ -99,9 +165,16 @@ const CompOffRequests = ({navigation}) => {
 export default CompOffRequests;
 
 const styles = StyleSheet.create({
+  requestItem: {
+    padding: 16,
+    backgroundColor: '#f0f0f0',
+    borderRadius: 8,
+    marginVertical: 8,
+  },
   container: {
     flex: 1,
-    padding: 16,
+    paddingHorizontal: 16,
+    paddingBottom: 32,
     backgroundColor: '#fff',
   },
 });
