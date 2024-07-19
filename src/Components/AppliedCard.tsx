@@ -22,6 +22,7 @@ interface AppliedCardProps {
   index: number;
   isLead: boolean;
   onPressApprove: () => void;
+  onPressApply: () => void;
   negativeButtonName?: string;
   positiveButtonName?: string;
   approveLoading?: boolean;
@@ -30,6 +31,7 @@ interface AppliedCardProps {
 
 const AppliedCard: FC<AppliedCardProps> = ({
   onPress,
+  onPressApply,
   item,
   index,
   isLead,
@@ -39,7 +41,17 @@ const AppliedCard: FC<AppliedCardProps> = ({
   approveLoading,
   rejectLoading,
 }) => {
-  console.log(item);
+  // console.log('item in quick access', item);
+
+  const showApplyCompOff = data => {
+    let available =
+      data.totalCompOffCount - data.consumedCount - data.expiredCount;
+    return (
+      // (data.status === 'approved' || data.status === 'Active') &&
+      available > 0 ? true : false
+    );
+  };
+
   return (
     <View
       style={{
@@ -249,35 +261,33 @@ const AppliedCard: FC<AppliedCardProps> = ({
                   />
                 </View>
               ) : null}
-              {item?.leaveType ? (
+              {showApplyCompOff(item) &&
+              !isLead &&
+              item.status == 'approved' ? (
                 <View style={{flex: 1, marginHorizontal: dip(10)}}>
                   <BlankButton
                     rejectLoading={rejectLoading}
                     loading={rejectLoading}
-                    backgroundColor={'#ffffff'}
-                    color={'#000000'}
-                    onPress={onPress}
-                    text={negativeButtonName ?? 'Cancel'}
+                    backgroundColor={'#134984'}
+                    color={'#ffffff'}
+                    onPress={onPressApply}
+                    text={'Apply Leave'}
                   />
                 </View>
               ) : null}
-            </View>
-            {item?.compOffCount !== undefined &&
-            !isLead &&
-            item?.status !== 'rejected' &&
-            item?.status !== 'cancelled' &&
-            item?.status !== 'pending' ? (
+              {/* {!item.totalCompOffCount ? ( */}
               <View style={{flex: 1, marginHorizontal: dip(10)}}>
                 <BlankButton
                   rejectLoading={rejectLoading}
                   loading={rejectLoading}
-                  backgroundColor={'#134984'}
-                  color={'#ffffff'}
+                  backgroundColor={'#ffffff'}
+                  color={'#000000'}
                   onPress={onPress}
-                  text={'Apply Leave'}
+                  text={negativeButtonName ?? 'Cancel'}
                 />
               </View>
-            ) : null}
+              {/* ) : null} */}
+            </View>
           </View>
         </View>
       </CardView>

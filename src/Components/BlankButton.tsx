@@ -20,6 +20,7 @@ interface BlankButtonProps {
   loading?: boolean;
   approveLoading?: boolean;
   rejectLoading?: boolean;
+  disabled?: boolean;
 }
 
 const BlankButton: React.FC<BlankButtonProps> = ({
@@ -30,6 +31,7 @@ const BlankButton: React.FC<BlankButtonProps> = ({
   loading,
   approveLoading,
   rejectLoading,
+  disabled,
 }) => {
   return (
     <TouchableOpacity

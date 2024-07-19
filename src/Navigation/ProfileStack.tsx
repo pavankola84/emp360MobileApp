@@ -18,6 +18,7 @@ import Summary from '../Screens/settings/Summary';
 import HolidaysList from '../Screens/QuckAccess/HolidaysList';
 import VisitorsList from '../Screens/QuckAccess/VisitorsList';
 import CompOffRequests from '../Screens/QuckAccess/CompOffRequests';
+import ApplyCompOffLeave from '../Screens/Home/ApplyCompOffLeave';
 
 const AuthStackNav = createNativeStackNavigator();
 
@@ -33,6 +34,10 @@ const ProfileStack = () => {
       <AuthStackNav.Screen name="HolidaysList" component={HolidaysList} />
       <AuthStackNav.Screen name="VisitorsList" component={VisitorsList} />
       <AuthStackNav.Screen name="CompOffRequests" component={CompOffRequests} />
+      <AuthStackNav.Screen
+        name="ApplyCompOffLeave"
+        component={ApplyCompOffLeave}
+      />
       {/* <AuthStackNav.Screen name="Assets" component={Assets} /> */}
       <AuthStackNav.Screen
         name="HobbiesAndInterests"

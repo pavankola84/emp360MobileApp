@@ -48,6 +48,7 @@ const ButtonIconWithTitle: React.FC<ButtonIconWithTitleProps> = ({
           justifyContent: 'flex-start',
           // height: theme.buttonHeight,
           width: '14%',
+          gap: 6,
           // borderWidth: 0.3,
         },
       ]}>
@@ -89,7 +90,7 @@ const ButtonIconWithTitle: React.FC<ButtonIconWithTitleProps> = ({
             // width: '80%',
             fontFamily: Fonts.RobotoBold,
             fontWeight: '400',
-            fontSize: dip(10),
+            fontSize: dip(11.5),
             textAlign: 'center',
             color: color ? color : theme.colors.disabled,
           },

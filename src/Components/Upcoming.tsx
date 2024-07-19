@@ -8,6 +8,7 @@ interface UpcomingProps {
   onPress: (item: any) => void;
   isLead?: boolean;
   onPressApprove?: (item: any) => void;
+  onPressApply?: (item: any) => void;
   id?: any;
   status?: any;
   approveLoading?: boolean;
@@ -19,6 +20,7 @@ const Upcoming: FC<UpcomingProps> = ({
   onPress,
   isLead,
   onPressApprove,
+  onPressApply,
   approveLoading,
   rejectLoading,
   id,
@@ -42,6 +44,9 @@ const Upcoming: FC<UpcomingProps> = ({
               index={index}
               onPressApprove={() => {
                 onPressApprove(item);
+              }}
+              onPressApply={() => {
+                onPressApply(item);
               }}
               negativeButtonName={isLead ? 'Reject' : 'Cancel'}
               positiveButtonName={'Approve'}

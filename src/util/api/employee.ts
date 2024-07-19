@@ -18,6 +18,7 @@ import {
   COMB_OFF_DECISION,
   Form_DATA,
   APPLY_COMP_OFF,
+  APPLY_COMP_OFF_LEAVE,
 } from '../endpoints';
 
 export interface ApiResponse<T> {
@@ -100,6 +101,28 @@ export const fetchLeavesData = async (
 ): Promise<ApiResponse<any>> => {
   try {
     const url = `${REACT_APP_API_GATEWAY_URL}${Form_RUNTIME_DATA}${EMP_LEAVES_FORM_ID}&page=0&size=10000&filter=formData.officialEmail:${emailId}`;
+    const response: AxiosResponse<any> = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (response.data.success) {
+      return {success: true, data: response.data.data};
+    } else {
+      return {success: false, message: 'Failed to fetch data'};
+    }
+  } catch (error: any) {
+    return {success: false, message: error.message || 'Unknown error occurred'};
+  }
+};
+
+export const fetchCardsData = async (
+  emailId: string,
+  token: string,
+): Promise<ApiResponse<any>> => {
+  try {
+    const url = `${REACT_APP_API_GATEWAY_URL}/emp360-backend/v1/cards`;
     const response: AxiosResponse<any> = await axios.get(url, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -237,6 +260,32 @@ export const applyLeaveCompOffEMP = async (
 ): Promise<ApiResponse<any>> => {
   try {
     const url = `${REACT_APP_API_GATEWAY_URL}${APPLY_COMP_OFF}`;
+    const response: AxiosResponse<any> = await axios.post(url, body, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (response.data.success) {
+      return {
+        success: true,
+        data: response.data.data,
+        message: response.data.message,
+      };
+    } else {
+      return {success: false, message: 'Failed to Post data'};
+    }
+  } catch (error: any) {
+    return {success: false, message: error.message || 'Unknown error occurred'};
+  }
+};
+
+export const applyLeaveCompOff = async (
+  body: {},
+  token: string,
+): Promise<ApiResponse<any>> => {
+  try {
+    const url = `${REACT_APP_API_GATEWAY_URL}${APPLY_COMP_OFF_LEAVE}`;
     const response: AxiosResponse<any> = await axios.post(url, body, {
       headers: {
         Authorization: `Bearer ${token}`,

@@ -166,6 +166,9 @@ const TeamLeaves: React.FC<TeamLeavesProps> = ({navigation}) => {
     setIsLoading(false);
   };
 
+  useEffect(() => {
+    console.log('combOff', combOff);
+  }, [combOff]);
   return (
     <View style={{flex: 1, backgroundColor: '#ffffff'}}>
       {/* <Loader isLoading={isLoading} /> */}

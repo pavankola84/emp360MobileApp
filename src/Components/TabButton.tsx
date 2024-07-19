@@ -12,7 +12,7 @@ import {ThemeOverride, theme} from '../util/theme';
 import CardView from 'react-native-cardview';
 import Fonts from '../util/Fonts';
 
-const TabButton = ({text, onPress, backgroundColor, color}) => {
+const TabButton = ({text, onPress, backgroundColor, color, fontWeight}) => {
   return (
     <TouchableOpacity
       activeOpacity={0.9}
@@ -42,7 +42,7 @@ const TabButton = ({text, onPress, backgroundColor, color}) => {
           style={[
             {
               fontFamily: Fonts.RobotoBold,
-              fontWeight: '800',
+              fontWeight: fontWeight,
               fontSize: dip(18),
               color: color ? color : theme.colors.disabled,
             },

@@ -2,6 +2,7 @@ export const Form_RUNTIME_DATA = '/form-runtime/v1/form-data?formId=';
 export const Form_DATA = '/form-runtime/v1/form-data';
 export const ACCOUNT_USERS = '/accounts/v1/users';
 export const APPLY_LEAVE = '/emp360-backend/v1/apply-leave';
+export const APPLY_COMP_OFF_LEAVE = '/emp360-backend/v1/apply-comp-off';
 export const APPLY_COMP_OFF = '/emp360-backend/v1/request/add-comp-off';
 export const HOLIDAYS_FORMID = '1060961139886174208';
 export const CANCEL_LEAVE =

@@ -24,6 +24,7 @@ import {useFocusEffect} from '@react-navigation/native';
 import {
   ApiResponse,
   cancelLeaveEMP,
+  fetchCardsData,
   fetchLeavesData,
   fetchMyLeaves,
 } from '../../util/api/employee';
@@ -82,6 +83,20 @@ interface LeaveDetails {
   };
 }
 
+interface LeaveDetailsCards {
+  accruedLeaveDetails: number;
+  consumedLeaveDetails: number;
+  leaveDetails: number;
+  expired?: number;
+}
+
+interface CardsDetails {
+  WFH: LeaveDetailsCards;
+  compOff: LeaveDetailsCards;
+  general: LeaveDetailsCards;
+  privilege: LeaveDetailsCards;
+}
+
 interface MyLeave {
   id: string;
   [key: string]: any;
@@ -94,6 +109,7 @@ const Home: React.FC<Props> = ({navigation}) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [isLead, setIsLead] = useState(false);
   const [leaveDetails, setLeaveDetails] = useState<LeaveDetails | {}>({});
+  const [cardsDetails, setCardsDetails] = useState<CardsDetails | null>(null);
   const [refresh, setRefresh] = useState(false);
 
   const [myLeaves, setMyLeaves] = useState<MyLeave[]>([]);
@@ -126,10 +142,33 @@ const Home: React.FC<Props> = ({navigation}) => {
     }
   };
 
+  const getCardsData = async () => {
+    try {
+      const response: ApiResponse<any> = await fetchCardsData(
+        profile.email,
+        keycloak?.token,
+      );
+      if (response.success) {
+        const data = response.data;
+        setCardsDetails(data);
+        setIsLoading(false);
+      } else {
+        Toast.error('Failed to fetch Card Details:' + response.message, 'top');
+        console.error('Failed to fetch Card Details:', response.message);
+        setIsLoading(false);
+      }
+    } catch (error: any) {
+      Toast.error('Failed to fetch Card Details:' + error.message, 'top');
+      console.error('Error fetching Card Details:', error.message);
+      setIsLoading(false);
+    }
+  };
+
   useFocusEffect(
     useCallback(() => {
       setIsLoading(true);
       getLeaveCounts();
+      getCardsData();
       getMyLeaves();
       return () => {};
     }, []),
@@ -152,7 +191,6 @@ const Home: React.FC<Props> = ({navigation}) => {
           },
         );
         handleLeavesData(formattedData);
-
         setMyLeaves(formattedData);
       } else {
         setMyLeaves([]);
@@ -251,6 +289,20 @@ const Home: React.FC<Props> = ({navigation}) => {
                 name={'Previlage Leaves'}
               />
             </View>
+            <View>
+              <LeaveDataCard
+                avaliable={cardsDetails?.compOff?.leaveDetails ?? 0}
+                consumed={cardsDetails?.compOff?.consumedLeaveDetails ?? 0}
+                name={'Comp-Off Leaves'}
+              />
+            </View>
+            <View>
+              <LeaveDataCard
+                avaliable={cardsDetails?.WFH?.leaveDetails ?? 0}
+                consumed={cardsDetails?.WFH?.consumedLeaveDetails ?? 0}
+                name={'WFH Leaves'}
+              />
+            </View>
             {/* <View
               style={{
                 height: dip(100),
@@ -339,6 +391,7 @@ const Home: React.FC<Props> = ({navigation}) => {
                 <TabButton
                   color={selectedIndex === 0 ? '#ffffff' : '#000000'}
                   backgroundColor={selectedIndex === 0 ? '#162952' : '#eeeeee'}
+                  fontWeight={selectedIndex === 0 ? 'bold' : '600'}
                   onPress={() => setSelectedIndex(0)}
                   text={'Upcoming'}
                 />

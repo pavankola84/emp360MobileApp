@@ -53,6 +53,7 @@ const ApplyVisitor: FC<ApplyVisitorProps> = ({navigation, route}) => {
   const [lastName, setLastName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [email, setEmail] = useState('');
+  const [location, setLocation] = useState('');
   const [host, setHost] = useState('');
   const [hostName, setHostName] = useState('');
   const [reason, setReason] = useState('');
@@ -144,23 +145,29 @@ const ApplyVisitor: FC<ApplyVisitorProps> = ({navigation, route}) => {
       return;
     }
 
-    console.log('Visitor Pass Submitted:', {
-      firstName,
-      lastName,
-      phoneNumber,
-      email,
-      host,
-      reason,
-      photoUri,
-      date,
-    });
+    setIsLoading(true);
+    const payload = {
+      firstName: firstName,
+      lastName: lastName,
+      visitorEmail: email,
+      visitorLocation: location,
+      photoUrl: photoUri,
+      visitorMobile: phoneNumber,
+      scheduledDateTime: date,
+      purpose: reason,
+      hostEmail: host,
+      hostName: hostName,
+    };
+    console.log('Visitor Pass Submitted:', payload);
 
     const newErrors2: Errors = {};
 
+    setIsLoading(false);
     setFirstName('');
     setLastName('');
     setPhoneNumber('');
     setEmail('');
+    setLocation('');
     setHost('');
     setHostName('');
     setReason('');
@@ -288,6 +295,15 @@ const ApplyVisitor: FC<ApplyVisitorProps> = ({navigation, route}) => {
               value={email}
               onChangeText={setEmail}
               keyboardType="email-address"
+              style={styles.inputField}
+            />
+          </View>
+          <View style={[styles.fieldContainer]}>
+            <TextInput
+              placeholderTextColor={'#666666'}
+              placeholder="Visitor's Location"
+              value={location}
+              onChangeText={setLocation}
               style={styles.inputField}
             />
           </View>

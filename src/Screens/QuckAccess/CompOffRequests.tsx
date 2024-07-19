@@ -23,6 +23,7 @@ import {
 import Upcoming from '../../Components/Upcoming';
 import Prompt from '../../Components/Prompt';
 import {Toast} from 'toastify-react-native';
+import {useNavigation} from '@react-navigation/native';
 
 interface MyLeave {
   id: string;
@@ -36,10 +37,14 @@ const CompOffRequests = ({navigation}) => {
   const [details, setDetails] = useState([]);
   const [empId, setEmpId] = useState('');
   const [compOffRequests, setCompOffRequests] = useState<MyLeave[]>([]);
-  const [id, setId] = useState('');
+  const [id, setId] = useState(null);
   const [status, setStatus] = useState('');
   const [showDialog, setShowDialog] = useState(false);
   const [refresh, setRefresh] = useState(false);
+
+  const handlePress = (path, id) => {
+    navigation.navigate(path, {id: id});
+  };
 
   const getProfileDetails = async () => {
     setIsLoading(true);
@@ -129,10 +134,14 @@ const CompOffRequests = ({navigation}) => {
             status={status}
             rejectLoading={status == 'reject' ? true : false}
             onPress={id => {
-              setIsLoading(true);
-              setStatus('reject');
-              setShowDialog(true);
               setId(id);
+              console.log('cancel pressed');
+            }}
+            onPressApply={id => {
+              console.log('Apply pressed');
+              setId(id);
+              // console.log('id', id);
+              handlePress('ApplyCompOffLeave', id);
             }}
             data={compOffRequests}
           />
