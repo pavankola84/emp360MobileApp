@@ -63,7 +63,6 @@ const AppliedCard: FC<AppliedCardProps> = ({
         cardElevation={2}
         style={{
           flex: 1,
-          backgroundColor: 'red',
         }}
         cardMaxElevation={2}
         cornerRadius={10}>

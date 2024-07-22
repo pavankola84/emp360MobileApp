@@ -23,6 +23,7 @@ import {
 import BlankProfilePic from '../../../assets/img/blank-profile.png';
 import TestImage from '../../../assets/img/Vignesh.jpeg';
 import {Toast} from 'toastify-react-native';
+import {theme} from '../../util/theme';
 
 enum StatusConstants {
   Pending = 'Pending',
@@ -256,6 +257,7 @@ const VisitorsList = ({navigation}) => {
         <TextInput
           style={styles.searchInput}
           placeholder="Search by name"
+          placeholderTextColor={theme.colors.text}
           value={searchQuery}
           onChangeText={handleSearch}
         />
@@ -281,7 +283,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 16,
     paddingBottom: 32,
-    backgroundColor: '#ffffff',
+    backgroundColor: theme.colors.surface,
   },
   card: {
     flexDirection: 'row',
@@ -313,7 +315,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   buttonContainer: {
-    // flexDirection: 'row',
     marginTop: 5,
     gap: 5,
   },
@@ -335,8 +336,8 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#000',
-    opacity: 0.75,
+    color: theme.colors.text,
+    // opacity: 0.75,
   },
   image: {
     width: 84,
@@ -349,7 +350,6 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
     borderWidth: 2,
     borderRadius: 8,
-    // marginVertical: 10,
     paddingHorizontal: 10,
     margin: 8,
   },

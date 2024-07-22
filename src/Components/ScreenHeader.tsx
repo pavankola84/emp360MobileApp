@@ -20,7 +20,9 @@ const ScreenHeader = (props: {
         flexDirection: 'row',
         alignItems: 'center',
         padding: theme.spacing,
-        backgroundColor: '#182c54',
+        backgroundColor: theme.colors.surface,
+        borderBottomColor: theme.colors.text,
+        borderBottomWidth: 0.2,
       }}>
       {navigation && (
         <TouchableOpacity
@@ -31,7 +33,7 @@ const ScreenHeader = (props: {
           <ChevronLeft
             width={dip(20)}
             height={dip(20)}
-            color={theme.colors.surface}
+            color={theme.colors.text}
           />
         </TouchableOpacity>
       )}
@@ -39,7 +41,7 @@ const ScreenHeader = (props: {
         style={{
           fontSize: dip(20),
           fontWeight: '700',
-          color: theme.colors.surface,
+          // color: theme.colors.surface,
         }}>
         {text}
       </Text>

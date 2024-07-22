@@ -353,106 +353,107 @@ const PersonalDetails = ({navigation}) => {
   return (
     <View
       style={[{flex: 1, height: theme.buttonHeight, backgroundColor: '#fff'}]}>
-      <ScreenHeader navigation={navigation} text={ProfileSettingsHead} />
       <Loader isLoading={isLoading} />
+      <ScreenHeader navigation={navigation} text={ProfileSettingsHead} />
 
-      <ScrollView style={{marginTop: 16, paddingHorizontal: 16}}>
-        <TouchableOpacity
-          onPress={handleProfilePicClick}
-          style={styles.profilePicContainer}>
-          {profilePic ? (
-            <Image
-              source={{uri: `data:image/jpeg;base64,${profilePic}`}}
-              style={styles.profilePic}
+      <ScrollView style={styles.container}>
+        <View style={styles.card}>
+          <TouchableOpacity
+            onPress={handleProfilePicClick}
+            style={styles.profilePicContainer}>
+            {profilePic ? (
+              <Image
+                source={{uri: `data:image/jpeg;base64,${profilePic}`}}
+                style={styles.profilePic}
+              />
+            ) : (
+              <Image source={BlankProfilePic} style={styles.profilePic} />
+            )}
+            <View style={styles.editIconContainer}>
+              <Image source={PenPNG} style={styles.editIcon} />
+            </View>
+          </TouchableOpacity>
+          <Text style={[styles.centerText, styles.nameHeader]}>
+            {details.firstName} {details.lastName}
+          </Text>
+          <Text style={[styles.designationHeader, styles.centerText]}>
+            {details.designation}
+          </Text>
+          <View style={styles.row}>
+            <View style={styles.column}>
+              <Text style={styles.fieldTitleText}>Emp ID:</Text>
+              <Text style={styles.fieldText}>{details.empId}</Text>
+            </View>
+            <View style={styles.column}>
+              <Text style={styles.fieldTitleText}>Email:</Text>
+              <Text style={styles.fieldText}>{details.officialEmail}</Text>
+            </View>
+          </View>
+          <View style={styles.row}>
+            <View style={styles.column}>
+              <Text style={styles.fieldTitleText}>Phone:</Text>
+              <Text style={styles.fieldText}>+ {phoneNo}</Text>
+            </View>
+            <View style={styles.column}>
+              <Text style={styles.fieldTitleText}>Location:</Text>
+              <Text style={styles.fieldText}>
+                {personalDetails.currentAddress}
+              </Text>
+            </View>
+          </View>
+          <View style={styles.row}>
+            <View style={styles.column}>
+              <Text style={styles.fieldTitleText}>Date of Birth:</Text>
+              <Text style={styles.fieldText}>{formattedDOB}</Text>
+            </View>
+            <View style={styles.column}>
+              <Text style={styles.fieldTitleText}>Marital Status:</Text>
+              <Text style={styles.fieldText}>
+                {personalDetails.family?.marriedStatus}
+              </Text>
+            </View>
+          </View>
+          <View style={styles.row}>
+            <View style={styles.column}>
+              <Text style={styles.fieldTitleText}>Blood Group:</Text>
+              <Text style={styles.fieldText}>{details.bloodGroup}</Text>
+            </View>
+            <View style={styles.column}>
+              <Text style={styles.fieldTitleText}>Emergency No:</Text>
+              <Text style={styles.fieldText}>+ {emergencyPhoneNo}</Text>
+            </View>
+          </View>
+          <View style={styles.row}>
+            <View style={styles.column}>
+              <Text style={styles.fieldTitleText}>Reporting To:</Text>
+              <Text style={styles.fieldText}>{details.reportingTo}</Text>
+            </View>
+            <View style={styles.column}>
+              <Text style={styles.fieldTitleText}>Department:</Text>
+              <Text style={styles.fieldText}>{details.department}</Text>
+            </View>
+          </View>
+          <View style={styles.row}>
+            <View style={styles.column}>
+              <Text style={styles.fieldTitleText}>Date of Joining:</Text>
+              <Text style={styles.fieldText}>{formattedDOJ}</Text>
+            </View>
+          </View>
+          <View style={styles.inputContainer}>
+            <Image source={LinkedinLogo} style={styles.logo} />
+            <TextInput
+              style={styles.linkedinInput}
+              value={linkedin}
+              onChangeText={setLinkedin}
             />
-          ) : (
-            <Image source={BlankProfilePic} style={styles.profilePic} />
-          )}
-          <View style={styles.editIconContainer}>
-            <Image source={PenPNG} style={styles.editIcon} />
+            <Image source={PenPNG} style={[styles.icon, styles.editIcon]} />
           </View>
-        </TouchableOpacity>
-        <Text style={[styles.centerText, styles.nameHeader]}>
-          {details.firstName} {details.lastName}
-        </Text>
-        <Text style={[styles.designationHeader, styles.centerText]}>
-          {details.designation}
-        </Text>
-        <View style={styles.row}>
-          <View style={styles.column}>
-            <Text style={styles.fieldTitleText}>Emp ID:</Text>
-            <Text style={styles.fieldText}>{details.empId}</Text>
-          </View>
-          <View style={styles.column}>
-            <Text style={styles.fieldTitleText}>Email:</Text>
-            <Text style={styles.fieldText}>{details.officialEmail}</Text>
-          </View>
-        </View>
-        <View style={styles.row}>
-          <View style={styles.column}>
-            <Text style={styles.fieldTitleText}>Phone:</Text>
-            <Text style={styles.fieldText}>+ {phoneNo}</Text>
-          </View>
-          <View style={styles.column}>
-            <Text style={styles.fieldTitleText}>Location:</Text>
-            <Text style={styles.fieldText}>
-              {personalDetails.currentAddress}
-            </Text>
-          </View>
-        </View>
-        <View style={styles.row}>
-          <View style={styles.column}>
-            <Text style={styles.fieldTitleText}>Date of Birth:</Text>
-            <Text style={styles.fieldText}>{formattedDOB}</Text>
-          </View>
-          <View style={styles.column}>
-            <Text style={styles.fieldTitleText}>Marital Status:</Text>
-            <Text style={styles.fieldText}>
-              {personalDetails.family?.marriedStatus}
-            </Text>
-          </View>
-        </View>
-        <View style={styles.row}>
-          <View style={styles.column}>
-            <Text style={styles.fieldTitleText}>Blood Group:</Text>
-            <Text style={styles.fieldText}>{details.bloodGroup}</Text>
-          </View>
-          <View style={styles.column}>
-            <Text style={styles.fieldTitleText}>Emergency No:</Text>
-            <Text style={styles.fieldText}>+ {emergencyPhoneNo}</Text>
-          </View>
-        </View>
-        <View style={styles.row}>
-          <View style={styles.column}>
-            <Text style={styles.fieldTitleText}>Reporting To:</Text>
-            <Text style={styles.fieldText}>{details.reportingTo}</Text>
-          </View>
-          <View style={styles.column}>
-            <Text style={styles.fieldTitleText}>Department:</Text>
-            <Text style={styles.fieldText}>{details.department}</Text>
-          </View>
-        </View>
-        <View style={styles.row}>
-          <View style={styles.column}>
-            <Text style={styles.fieldTitleText}>Date of Joining:</Text>
-            <Text style={styles.fieldText}>{formattedDOJ}</Text>
-          </View>
-        </View>
-        <View style={styles.inputContainer}>
-          <Image source={LinkedinLogo} style={styles.logo} />
-          <TextInput
-            style={styles.linkedinInput}
-            value={linkedin}
-            onChangeText={setLinkedin}
+          <PrimaryButton
+            onPress={() => handleSave()}
+            text={'Save'}
+            style={styles.saveButton}
           />
-          <Image source={PenPNG} style={[styles.icon, styles.editIcon]} />
         </View>
-        <PrimaryButton
-          onPress={() => handleSave()}
-          text={'Save'}
-          style={styles.saveButton}
-        />
-        {/* <Button title="Save" onPress={handleSave} /> */}
       </ScrollView>
     </View>
   );
@@ -463,10 +464,13 @@ export default PersonalDetails;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
-    backgroundColor: '#fff',
+    paddingHorizontal: 16,
+    paddingBottom: 32,
+    backgroundColor: '#ffffff',
   },
-
+  card: {
+    marginVertical: 8,
+  },
   profilePicContainer: {
     alignItems: 'center',
     marginBottom: 16,
@@ -560,6 +564,5 @@ const styles = StyleSheet.create({
   saveButton: {
     width: '50%',
     alignSelf: 'center',
-    // backgroundColor: '#f15830',
   },
 });

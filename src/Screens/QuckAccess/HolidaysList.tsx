@@ -16,7 +16,6 @@ import {HolidaysListHead} from '../../util/strings';
 import {theme} from '../../util/theme';
 import {ApiResponse, fetchDataWithoutEmail} from '../../util/api/employee';
 import {EMP_HOLIDAYS_FORM_ID} from '../../util/constants';
-import Divider from '../../Components/Divider';
 
 const HolidaysList = ({navigation}) => {
   const theme = useTheme();

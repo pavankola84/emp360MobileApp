@@ -10,7 +10,6 @@ import {
   View,
   Alert,
 } from 'react-native';
-// import CheckBox from '@react-native-community/checkbox';
 import Header from '../../Components/Header';
 import {theme} from '../../util/theme';
 import PrimaryButton from '../../Components/PrimaryButton';
@@ -64,6 +63,10 @@ const ApplyVisitor: FC<ApplyVisitorProps> = ({navigation, route}) => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [date, setDate] = useState<Date | null>(null);
 
+  const onBackPress = () => {
+    navigation.goBack();
+  };
+
   const hideDatePicker = () => {
     setDatePickerVisibility(false);
   };
@@ -84,6 +87,21 @@ const ApplyVisitor: FC<ApplyVisitorProps> = ({navigation, route}) => {
     return dateTime
       ? dayjs(dateTime).format('YYYY-MM-DD HH:mm')
       : 'Scheduled Date & Time*';
+  };
+
+  const openCamera = () => {
+    const options: any = {
+      mediaType: 'photo',
+      quality: 1,
+    };
+
+    launchCamera(options, response => {
+      if (response.assets && response.assets[0]) {
+        setPhotoUri(response.assets[0].uri);
+      } else {
+        Alert.alert('Error', 'Failed to capture photo.');
+      }
+    });
   };
 
   const getUsers = async () => {
@@ -177,45 +195,10 @@ const ApplyVisitor: FC<ApplyVisitorProps> = ({navigation, route}) => {
     setErrors(newErrors2);
   };
 
-  const openCamera = () => {
-    const options: any = {
-      mediaType: 'photo',
-      quality: 1,
-    };
-
-    launchCamera(options, response => {
-      if (response.assets && response.assets[0]) {
-        setPhotoUri(response.assets[0].uri);
-      } else {
-        Alert.alert('Error', 'Failed to capture photo.');
-      }
-    });
-  };
-
-  const onBackPress = () => {
-    navigation.goBack();
-  };
-
-  const renderItem = (item: any) => {
-    return (
-      <View style={styles.item}>
-        <Text style={styles.selectedTextStyle}>{item.label}</Text>
-      </View>
-    );
-  };
-
   const clearHost = () => {
     setHost('');
     setHostName('');
   };
-
-  useFocusEffect(
-    useCallback(() => {
-      setIsLoading(true);
-      getUsers();
-      return () => {};
-    }, []),
-  );
 
   useEffect(() => {
     if (typeof host.label === 'string') {
@@ -230,6 +213,22 @@ const ApplyVisitor: FC<ApplyVisitorProps> = ({navigation, route}) => {
       console.log('Invalid host format or host is undefined.');
     }
   }, [host]);
+
+  useFocusEffect(
+    useCallback(() => {
+      setIsLoading(true);
+      getUsers();
+      return () => {};
+    }, []),
+  );
+
+  const renderItem = (item: any) => {
+    return (
+      <View style={styles.item}>
+        <Text style={styles.selectedTextStyle}>{item.label}</Text>
+      </View>
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -516,10 +515,6 @@ const ApplyVisitor: FC<ApplyVisitorProps> = ({navigation, route}) => {
 export default ApplyVisitor;
 
 const styles = StyleSheet.create({
-  //   container: {
-  //     flex: 1,
-  //     backgroundColor: '#ffffff',
-  //   },
   fieldContainer: {
     justifyContent: 'space-evenly',
     borderWidth: 1,
@@ -609,7 +604,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f5f5f5',
-    // padding: 16,
   },
   scrollContainer: {
     flexGrow: 1,
@@ -619,7 +613,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '500',
     color: '#162952',
-    // marginBottom: 20,
   },
   input: {
     width: '100%',
