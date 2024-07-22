@@ -89,21 +89,32 @@ const visitors = [
   },
 ];
 
-const VisitorCard = ({visitor}) => {
+const VisitorCard = ({visitor, updateVisitorStatus}) => {
   const [checkInTime, setCheckInTime] = useState(visitor.checkin);
   const [checkOutTime, setCheckOutTime] = useState(visitor.checkout);
+  const [status, setStatus] = useState(visitor.status);
 
   const handleCheckIn = () => {
     const currentTime = new Date().toISOString();
     Toast.success('Check In successful.');
     setCheckInTime(currentTime);
+    setStatus(StatusConstants.CheckedIn);
+    updateVisitorStatus(visitor.id, StatusConstants.CheckedIn, currentTime, '');
   };
 
   const handleCheckOut = () => {
     const currentTime = new Date().toISOString();
     Toast.success('Check Out successful.');
     setCheckOutTime(currentTime);
+    setStatus(StatusConstants.CheckedOut);
+    updateVisitorStatus(
+      visitor.id,
+      StatusConstants.CheckedOut,
+      checkInTime,
+      currentTime,
+    );
   };
+
   const backgroundColor = {
     backgroundColor:
       visitor.status === StatusConstants.Approved
@@ -148,9 +159,7 @@ const VisitorCard = ({visitor}) => {
               styles.button,
               {backgroundColor: backgroundColor.backgroundColor},
             ]}>
-            <Text style={[styles.details, {color: '#fff'}]}>
-              {visitor.status}
-            </Text>
+            <Text style={[styles.details, {color: '#fff'}]}>{status}</Text>
           </View>
         </View>
       </View>
@@ -159,42 +168,48 @@ const VisitorCard = ({visitor}) => {
           source={visitor.photoUrl ? {uri: visitor.photoUrl} : TestImage}
           style={styles.image}
         />
-        <View
-          style={[
-            styles.buttonContainer,
-            {
-              marginLeft: 10,
-            },
-          ]}>
-          <TouchableOpacity
-            style={[styles.button, checkInTime && styles.disabledButton]}
-            onPress={handleCheckIn}
-            disabled={!!checkInTime}>
-            <Text style={styles.buttonText}>
-              {checkInTime
-                ? new Date(checkInTime).toLocaleTimeString([], {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  })
-                : 'Check In'}
-            </Text>
-          </TouchableOpacity>
-          {checkInTime ? (
+        {status !== StatusConstants.Pending && (
+          <View
+            style={[
+              styles.buttonContainer,
+              {
+                marginLeft: 10,
+              },
+            ]}>
+            {/* {status === StatusConstants.Approved && ( */}
             <TouchableOpacity
-              style={[styles.button, checkOutTime && styles.disabledButton]}
-              onPress={handleCheckOut}
-              disabled={!!checkOutTime}>
+              style={[styles.button, checkInTime && styles.disabledButton]}
+              onPress={handleCheckIn}
+              disabled={!!checkInTime}>
               <Text style={styles.buttonText}>
-                {checkOutTime
-                  ? new Date(checkOutTime).toLocaleTimeString([], {
+                {checkInTime
+                  ? new Date(checkInTime).toLocaleTimeString([], {
                       hour: '2-digit',
                       minute: '2-digit',
                     })
-                  : 'Check Out'}
+                  : 'Check In'}
               </Text>
             </TouchableOpacity>
-          ) : null}
-        </View>
+            {/* )} */}
+            {/* {status === StatusConstants.CheckedIn && ( */}
+            {checkInTime ? (
+              <TouchableOpacity
+                style={[styles.button, checkOutTime && styles.disabledButton]}
+                onPress={handleCheckOut}
+                disabled={!!checkOutTime}>
+                <Text style={styles.buttonText}>
+                  {checkOutTime
+                    ? new Date(checkOutTime).toLocaleTimeString([], {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })
+                    : 'Check Out'}
+                </Text>
+              </TouchableOpacity>
+            ) : null}
+            {/* )} */}
+          </View>
+        )}
       </View>
     </View>
   );
@@ -226,6 +241,13 @@ const VisitorsList = ({navigation}) => {
     setFilteredVisitors(filteredData);
   };
 
+  const updateVisitorStatus = (id, status, checkin, checkout) => {
+    const updatedVisitors = filteredVisitors.map(visitor =>
+      visitor.id === id ? {...visitor, status, checkin, checkout} : visitor,
+    );
+    setFilteredVisitors(updatedVisitors);
+  };
+
   return (
     <View style={{flex: 1, height: theme.buttonHeight}}>
       <Loader isLoading={isLoading} />
@@ -239,7 +261,12 @@ const VisitorsList = ({navigation}) => {
         />
         <FlatList
           data={filteredVisitors}
-          renderItem={({item}) => <VisitorCard visitor={item} />}
+          renderItem={({item}) => (
+            <VisitorCard
+              visitor={item}
+              updateVisitorStatus={updateVisitorStatus}
+            />
+          )}
           keyExtractor={item => item.id.toString()}
         />
       </ScrollView>
